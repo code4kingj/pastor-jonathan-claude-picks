@@ -157,6 +157,8 @@
 .pick-copy strong, .pick-copy span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block; }
 .pick-copy strong { color: #142943; }
 .pick-copy span { margin-top: 4px; color: #778a9e; font-size: 11px; }
+.pick-watch { width: fit-content; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; color: #0b5cab; font-size: 10px; font-weight: 900; text-decoration: none; }
+.pick-watch:hover { text-decoration: underline; }
 .pick-actions { display: flex; gap: 3px; }
 .icon-button { width: 34px; height: 34px; border: 0; border-radius: 8px; display: grid; place-items: center; color: #60758c; background: #eef3f8; }
 .icon-button:disabled { opacity: .55; cursor: not-allowed; }
@@ -257,6 +259,7 @@ footer span { display: flex; align-items: center; gap: 7px; }
   .pick-row > img { width: 56px; height: 45px; }
   .pick-actions { grid-column: 2 / -1; justify-content: flex-end; }
   .pick-copy strong { white-space: normal; line-height: 1.18; }
+  .pick-watch { min-height: 28px; font-size: 11px; }
   .pick-actions .icon-button { width: 44px; height: 44px; }
   .rank-number { width: 32px; height: 32px; }
   .result-row { padding: 11px 8px; grid-template-columns: 35px minmax(0,1fr) 55px; }

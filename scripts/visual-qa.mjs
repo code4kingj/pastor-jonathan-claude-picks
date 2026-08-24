@@ -40,6 +40,10 @@ try {
   await page.getByRole('button', { name: /My Top 33/ }).click()
   await page.locator('.pick-row').nth(2).waitFor()
   if ((await page.locator('.pick-row').count()) !== 3) throw new Error('Three selected cards did not reach the ranking view.')
+  const pickWatchLinks = page.locator('.pick-watch')
+  if ((await pickWatchLinks.count()) !== 3) throw new Error('Every ranked pick must include a source-video link.')
+  const firstPickHref = await pickWatchLinks.first().getAttribute('href')
+  if (!firstPickHref?.includes('youtube.com/watch?v=Ok72hT9iOpY&t=')) throw new Error(`Invalid ranked-pick video link: ${firstPickHref}`)
   const reorderSave = page.waitForResponse((response) => response.url() === roomApi && response.request().method() === 'PUT' && response.ok())
   await page.getByRole('button', { name: /Move Horse-Drawn Streetcars down/ }).click()
   await reorderSave

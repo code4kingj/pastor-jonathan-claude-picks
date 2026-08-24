@@ -112,6 +112,15 @@ function SortablePick({
       <div className="pick-copy">
         <strong>{item.name}</strong>
         <span>{item.park} · {item.area}</span>
+        <a
+          className="pick-watch"
+          href={`https://www.youtube.com/watch?v=Ok72hT9iOpY&t=${item.timestamp}s`}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Watch ${item.name} in the source video at ${item.timestampLabel}`}
+        >
+          <Play size={13} fill="currentColor" /> Watch at {item.timestampLabel} <ExternalLink size={11} />
+        </a>
       </div>
       <div className="pick-actions">
         <button className="icon-button drag-handle" aria-label={`Drag ${item.name}`} {...attributes} {...listeners}>
