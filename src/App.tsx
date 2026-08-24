@@ -48,7 +48,11 @@ import {
   type RoomCredentials,
 } from './roomApi'
 import type { Attraction, FamilyMember, FamilyRoom, Park } from './types'
+import { EarMark, ProgressEars, RankMedallion } from './components/EarMark'
+import { NightSky } from './components/NightSky'
+import { ThemeDial } from './components/ThemeDial'
 import './App.css'
+import './themes.css'
 
 const attractions = attractionData as Attraction[]
 const attractionById = new Map(attractions.map((item) => [item.id, item]))
@@ -87,7 +91,19 @@ function mergeLocalMember(room: FamilyRoom | null, member: FamilyMember | null):
     : [...room.members, member]
 }
 
-function SortablePick({
+/* decorative drifting ears used on the gate and the hero */
+function FloatField() {
+  return (
+    <div className="float-field" aria-hidden="true">
+      <span className="float-ear"><EarMark size={54} /></span>
+      <span className="float-ear"><EarMark size={34} /></span>
+      <span className="float-ear"><EarMark size={44} /></span>
+      <span className="float-ear"><EarMark size={28} /></span>
+    </div>
+  )
+}
+
+export function SortablePick({
   item,
   rank,
   total,
@@ -107,21 +123,21 @@ function SortablePick({
       className={`pick-row ${parkClass[item.park]} ${isDragging ? 'dragging' : ''}`}
       style={{ transform: CSS.Transform.toString(transform), transition }}
     >
-      <div className="rank-number">{rank}</div>
+      <RankMedallion rank={rank} size={46} />
       <img src={imageUrl(item)} alt="" />
       <div className="pick-copy">
         <strong>{item.name}</strong>
         <span>{item.park} · {item.area}</span>
-        <a
-          className="pick-watch"
-          href={`https://www.youtube.com/watch?v=Ok72hT9iOpY&t=${item.timestamp}s`}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Watch ${item.name} in the source video at ${item.timestampLabel}`}
-        >
-          <Play size={13} fill="currentColor" /> Watch at {item.timestampLabel} <ExternalLink size={11} />
-        </a>
       </div>
+      <a
+        className="pick-watch"
+        href={`https://www.youtube.com/watch?v=Ok72hT9iOpY&t=${item.timestamp}s`}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Watch ${item.name} in the source video at ${item.timestampLabel}`}
+      >
+        <Play size={16} fill="currentColor" /> Watch this pick at {item.timestampLabel} <ExternalLink size={13} />
+      </a>
       <div className="pick-actions">
         <button className="icon-button drag-handle" aria-label={`Drag ${item.name}`} {...attributes} {...listeners}>
           <GripVertical size={19} />
@@ -140,14 +156,14 @@ function SortablePick({
   )
 }
 
-function AttractionCard({ item, rank, onToggle }: { item: Attraction; rank?: number; onToggle: () => void }) {
+export function AttractionCard({ item, rank, onToggle }: { item: Attraction; rank?: number; onToggle: () => void }) {
   return (
     <article className={`attraction-card ${parkClass[item.park]} ${rank ? 'selected' : ''}`}>
       <div className="card-image">
         <img src={imageUrl(item)} alt={`Video view of ${item.name}`} loading="lazy" />
         <div className="image-scrim" />
         <span className="video-order">#{item.order} in video</span>
-        {rank && <span className="selected-rank"><Heart size={15} fill="currentColor" /> #{rank}</span>}
+        {rank && <span className="selected-rank"><RankMedallion rank={rank} size={42} /></span>}
       </div>
       <div className="card-body">
         <div className="card-meta">
@@ -168,6 +184,7 @@ function AttractionCard({ item, rank, onToggle }: { item: Attraction; rank?: num
             target="_blank"
             rel="noreferrer"
             className="watch-link"
+            aria-label={`Watch ${item.name} at ${item.timestampLabel}`}
           >
             <Play size={16} fill="currentColor" /> {item.timestampLabel}
           </a>
@@ -319,16 +336,26 @@ function App() {
   }
 
   if (loading) {
-    return <main className="gate"><div className="gate-card"><WandSparkles size={38} /><h1>Opening the birthday room…</h1></div></main>
+    return (
+      <main className="gate">
+        <NightSky />
+        <div className="gate-loader">
+          <EarMark className="gate-ears" />
+          <h1>Opening the birthday room…</h1>
+        </div>
+        <ThemeDial />
+      </main>
+    )
   }
 
   if (!room || !member) {
     const joining = Boolean(room && credentials)
     return (
       <main className="gate">
-        <div className="stars" aria-hidden="true" />
+        <NightSky />
+        <FloatField />
         <section className="gate-card">
-          <div className="gate-icon"><PartyPopper size={34} /></div>
+          <EarMark className="gate-ears" />
           {isTestRoom && <div className="test-room-gate"><b>TEST ROOM</b><span>Practice here—nothing you choose affects the real family results.</span></div>}
           <p className="eyebrow">A family adventure for</p>
           <h1>Pastor Jonathan’s<br /><span>Birthday Picks</span></h1>
@@ -340,15 +367,18 @@ function App() {
             <span><Sparkles size={16} /> 155 experiences</span>
             <span><Users size={16} /> One family result</span>
           </div>
-          <label htmlFor="name">What should the family call you?</label>
-          <div className="name-row">
-            <input id="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Your first name" maxLength={32} onKeyDown={(event) => event.key === 'Enter' && (joining ? joinRoom() : startRoom())} />
-            <button onClick={joining ? joinRoom : startRoom} disabled={!name.trim()}>{joining ? 'Join the room' : 'Start our room'} <Sparkles size={18} /></button>
-          </div>
+          <form onSubmit={(event) => { event.preventDefault(); if (joining) joinRoom(); else startRoom() }}>
+            <label htmlFor="name">What should the family call you?</label>
+            <div className="name-row">
+              <input id="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Your first name" maxLength={32} />
+              <button type="submit" className="shimmer" disabled={!name.trim()}>{joining ? 'Join the room' : 'Start our room'} <Sparkles size={18} /></button>
+            </div>
+          </form>
           {error && <p className="error-message">{error}</p>}
           {!isSharedModeAvailable && <p className="demo-note">Local preview mode is active until shared storage is connected.</p>}
           <p className="unofficial">A private family planner inspired by the magic of the parks. Not affiliated with or endorsed by Disney.</p>
         </section>
+        <ThemeDial />
       </main>
     )
   }
@@ -356,19 +386,21 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a href="#top" className="brand"><span className="brand-mark"><Crown size={20} /></span><span>Pastor Jonathan’s <b>Birthday Picks</b></span></a>
+        <a href="#top" className="brand"><span className="brand-ears"><EarMark size={26} /></span><span>Pastor Jonathan’s <b>Birthday Picks</b></span></a>
         <nav aria-label="Main views">
           <button className={view === 'discover' ? 'active' : ''} onClick={() => setView('discover')}><Search size={17} /> Discover</button>
           <button className={view === 'rank' ? 'active' : ''} onClick={() => setView('rank')}><Heart size={17} /> My Top 33 <span className="count">{ranking.length}</span></button>
           <button className={view === 'results' ? 'active' : ''} onClick={() => setView('results')}><BarChart3 size={17} /> Family Results</button>
         </nav>
-        <button className="share-button" onClick={shareRoom}>{copied ? <Check size={17} /> : <Link2 size={17} />}{copied ? 'Copied!' : 'Invite family'}</button>
+        <button className="share-button shimmer" onClick={shareRoom}>{copied ? <Check size={17} /> : <Link2 size={17} />}{copied ? 'Copied!' : 'Invite family'}</button>
       </header>
       {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
+      {isTestRoom && <div className="test-watermark" aria-hidden="true">TEST ROOM</div>}
 
       {view === 'discover' && (
         <main id="top">
           <section className="hero-banner">
+            <FloatField />
             <div className="hero-copy">
               <p className="eyebrow"><Sparkles size={15} /> Watch · Pick · Celebrate</p>
               <h1>Which adventures make your <em>Top 33?</em></h1>
@@ -380,12 +412,12 @@ function App() {
             </div>
             <div className="hero-collage" aria-hidden="true">
               {[attractions[7], attractions[57], attractions[106], attractions[149]].map((item) => <img key={item.id} src={imageUrl(item)} alt="" />)}
-              <div className="hero-medallion"><span>{ranking.length}</span><small>of 33<br />picked</small></div>
+              <div className="hero-medallion"><ProgressEars value={ranking.length} max={TOP_LIMIT} size={104} /><small>{ranking.length} of 33 picked</small></div>
             </div>
           </section>
 
           <section className="progress-strip" aria-label="Your progress">
-            <div><span className="avatar">{member.name.slice(0, 1).toUpperCase()}</span><p><b>{member.name}’s adventure list</b><small>{syncState === 'saved' ? 'Saved to the family room' : syncState === 'saving' ? 'Saving your picks…' : 'Could not sync'}</small></p></div>
+            <div className="progress-identity"><span className="avatar">{member.name.slice(0, 1).toUpperCase()}</span><p><b>{member.name}’s adventure list</b><small>{syncState === 'saved' ? 'Saved to the family room' : syncState === 'saving' ? 'Saving your picks…' : 'Could not sync'}</small></p></div>
             <div className="progress-track"><span style={{ width: `${(ranking.length / TOP_LIMIT) * 100}%` }} /></div>
             <strong>{ranking.length} / {TOP_LIMIT}</strong>
           </section>
@@ -423,12 +455,12 @@ function App() {
                     <div className="pick-list">{rankedAttractions.map((item, index) => <SortablePick key={item.id} item={item} rank={index + 1} total={ranking.length} onMove={(direction) => updateRanking(moveItem(ranking, index, index + direction))} onRemove={() => togglePick(item.id)} />)}</div>
                   </SortableContext>
                 </DndContext>
-              ) : <div className="empty-state"><Heart size={38} /><h3>Your list is waiting for some magic.</h3><button onClick={() => setView('discover')}>Browse all experiences</button></div>}
+              ) : <div className="empty-state"><EarMark className="gate-ears" /><h3>Your list is waiting for some magic.</h3><button onClick={() => setView('discover')}>Browse all experiences</button></div>}
             </section>
             <aside className="rank-aside">
               <div className="aside-card gold"><Crown size={27} /><h3>How family scoring works</h3><p>Your #1 receives 33 points. Each following rank receives one fewer. Shared favorites naturally rise to the top.</p></div>
               <div className="aside-card"><Users size={25} /><h3>{members.length} family {members.length === 1 ? 'member' : 'members'} joined</h3><div className="member-chips">{members.map((item) => <span key={item.id}>{item.name} <small>{item.rankings.length}/33</small></span>)}</div></div>
-              <button className="results-cta" onClick={() => setView('results')}><BarChart3 size={19} /> See family results</button>
+              <button className="results-cta shimmer" onClick={() => setView('results')}><BarChart3 size={19} /> See family results</button>
             </aside>
           </div>
         </main>
@@ -437,6 +469,14 @@ function App() {
       {view === 'results' && (
         <main className="results-page">
           <section className="results-hero">
+            <NightSky />
+            <div className="confetti-field" aria-hidden="true">
+              <span className="confetti-ear"><EarMark size={22} /></span>
+              <span className="confetti-ear"><EarMark size={16} /></span>
+              <span className="confetti-ear"><EarMark size={26} /></span>
+              <span className="confetti-ear"><EarMark size={18} /></span>
+              <span className="confetti-ear"><EarMark size={20} /></span>
+            </div>
             <p className="eyebrow"><PartyPopper size={16} /> The family reveal</p>
             <h1>Our Birthday Adventure</h1>
             <p>Combined from {members.length} {members.length === 1 ? 'wishlist' : 'wishlists'} · updates automatically as family members finish.</p>
@@ -460,7 +500,8 @@ function App() {
         </main>
       )}
 
-      <footer><span><Sparkles size={16} /> Made with love for Pastor Jonathan’s birthday</span><span>Unofficial private family planner · Attraction frames come from the supplied source video.</span></footer>
+      <footer><span><EarMark size={16} color="var(--red)" /> Made with love for Pastor Jonathan’s birthday</span><span>Unofficial private family planner · Attraction frames come from the supplied source video.</span></footer>
+      <ThemeDial />
     </div>
   )
 }

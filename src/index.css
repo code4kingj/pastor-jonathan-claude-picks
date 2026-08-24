@@ -1,31 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700&display=swap');
+/* ── Birthday Picks · design-system root ─────────────────────────────────────
+   Candidate: candidate/claude-code-redesign. Original visual layer.
+   Palette language: classic character colors, no official assets —
+   true red, ink black, glove white, shoe-gold, midnight firework sky. */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap');
 
 :root {
-  font-family: 'DM Sans', system-ui, sans-serif;
-  color: #f8fbff;
-  background: #04162f;
-  font-synthesis: none;
+  /* the five colors that ARE the theme */
+  --red: #e3273d;
+  --red-deep: #b3132a;
+  --gold: #ffc72c;
+  --gold-deep: #dfa50e;
+  --ink: #191114;
+  --glove: #ffffff;
+
+  /* grounds */
+  --sky: #0e0a1e;        /* midnight firework sky */
+  --sky-2: #1c1240;
+  --sky-3: #2b174e;
+  --sky-4: #451d3e;
+  --cream: #fff7ee;      /* daytime park paper */
+  --paper: #fdefdd;
+  --card: #ffffff;
+  --card-hi: #fffdf9;    /* paper sheen + ticket punch holes */
+
+  /* surface details (every theme repaints these) */
+  --line: #f0e4d0;
+  --chip: #f2e6d2;
+  --track: #f3e5cf;
+  --hover: #f4e7d4;
+  --topbar-bg: rgba(255, 247, 238, 0.88);
+  --paper-dot: rgba(223, 165, 14, 0.055);
+
+  /* text */
+  --text: #241a1e;
+  --text-2: #6d5f66;
+  --text-on-dark: #fdf6ff;
+  --dim-on-dark: #b9aecb;
+
+  /* park families (color language only) */
+  --magic: #e3273d;
+  --animal: #2f9e63;
+  --epcot: #4a7fe8;
+  --studios: #f29a37;
+
+  --display: 'Baloo 2', 'Nunito', ui-rounded, system-ui, sans-serif;
+  --body: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 22px;
+  --radius-tile: 16px;
+  --shadow-card: 0 2px 4px rgba(25, 17, 20, 0.06), 0 18px 44px rgba(25, 17, 20, 0.13);
+  --shadow-pop: 0 4px 8px rgba(25, 17, 20, 0.10), 0 28px 64px rgba(25, 17, 20, 0.22);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.4, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  --navy: #04162f;
-  --blue: #0b5cab;
-  --sky: #35b7ff;
-  --gold: #ffd166;
-  --pink: #ff6fae;
-  --mint: #65e2bd;
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; min-height: 100vh; }
-button, input { font: inherit; }
-button { cursor: pointer; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body, #root { min-height: 100dvh; }
+body { background: var(--cream); color: var(--text); min-width: 320px; overflow-x: hidden; }
+
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; }
+input, select { font: inherit; }
 a { color: inherit; }
 
-button:focus-visible, input:focus-visible, a:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-}
+::selection { background: var(--gold); color: var(--ink); }
+
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

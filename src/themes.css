@@ -1,0 +1,398 @@
+/* ═════════════════════════════════════════════════════════════════════════════
+   SIX DESIGN CANDIDATES — token repaints + signature textures per theme.
+   Sources studied on styles.refero.design (see themes.ts). The default
+   (no data-theme / 'mickey') lives in index.css + App.css untouched.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Outfit:wght@200;300;400;500;600&display=swap');
+
+/* ═══ MINNIE · POLKA PARLOR ═══ */
+[data-theme='minnie'] {
+  --red: #e42a63;
+  --red-deep: #bc1049;
+  --gold: #ffc72c;
+  --gold-deep: #dfa50e;
+  --ink: #33101f;
+  --sky: #23081a;
+  --sky-2: #47102f;
+  --sky-3: #6b1a3f;
+  --sky-4: #8f2247;
+  --cream: #fff3f7;
+  --paper: #ffe4ee;
+  --card-hi: #fffafc;
+  --text: #331722;
+  --text-2: #7c5a68;
+  --dim-on-dark: #e2b7c8;
+  --magic: #e42a63;
+  --line: #f6d9e4;
+  --chip: #fbe2ec;
+  --track: #f8dce8;
+  --hover: #fbe2ec;
+  --topbar-bg: rgba(255, 243, 247, 0.88);
+  --paper-dot: rgba(228, 42, 99, 0.09);
+}
+/* signature: big white polka dots on rose surfaces */
+[data-theme='minnie'] .app-shell {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.85) 5px, transparent 5.6px) 0 0 / 46px 46px,
+    radial-gradient(rgba(255, 255, 255, 0.85) 5px, transparent 5.6px) 23px 23px / 46px 46px,
+    #ffe4ee;
+}
+[data-theme='minnie'] .gate,
+[data-theme='minnie'] .hero-banner,
+[data-theme='minnie'] .results-hero {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.10) 4px, transparent 4.6px) 0 0 / 52px 52px,
+    radial-gradient(rgba(255, 255, 255, 0.10) 4px, transparent 4.6px) 26px 26px / 52px 52px,
+    linear-gradient(168deg, var(--sky) 0%, var(--sky-2) 58%, var(--sky-3) 100%);
+}
+[data-theme='minnie'] .attraction-card { border-radius: 26px; }
+[data-theme='minnie'] .gate .float-ear { color: #ff9ec0; }
+
+/* ═══ OSWALD · LUCKY PRESS ═══ */
+[data-theme='oswald'] {
+  --red: #2f5f8f;
+  --red-deep: #234a72;
+  --gold: #d9b13b;
+  --gold-deep: #b28d21;
+  --ink: #1c1914;
+  --sky: #14181d;
+  --sky-2: #1f2c3a;
+  --sky-3: #2f4256;
+  --sky-4: #3c536b;
+  --cream: #f4ead8;
+  --paper: #ecdfc6;
+  --card: #faf3e3;
+  --card-hi: #fdf8ec;
+  --text: #241f17;
+  --text-2: #6e6350;
+  --text-on-dark: #f3ecda;
+  --dim-on-dark: #b8ad93;
+  --magic: #b3402f;
+  --animal: #4c7a4c;
+  --epcot: #2f5f8f;
+  --studios: #c07f2e;
+  --line: #ddceac;
+  --chip: #eadfc4;
+  --track: #e5d8ba;
+  --hover: #eadfc4;
+  --topbar-bg: rgba(244, 234, 216, 0.9);
+  --paper-dot: rgba(28, 25, 20, 0.06);
+  --display: 'Fraunces', 'Baloo 2', serif;
+  --radius-card: 14px;
+  --radius-tile: 10px;
+  --shadow-card: 0 1px 2px rgba(28, 25, 20, 0.08), 0 10px 24px rgba(28, 25, 20, 0.1);
+  --shadow-pop: 0 2px 4px rgba(28, 25, 20, 0.1), 0 16px 36px rgba(28, 25, 20, 0.16);
+}
+/* signature: heavy halftone newsprint + slightly aged photographs */
+[data-theme='oswald'] .app-shell {
+  background:
+    radial-gradient(rgba(28, 25, 20, 0.075) 1.2px, transparent 1.7px) 0 0 / 8px 8px,
+    var(--cream);
+}
+[data-theme='oswald'] img { filter: sepia(0.28) contrast(1.05) saturate(0.82); }
+[data-theme='oswald'] .attraction-card,
+[data-theme='oswald'] .pick-row,
+[data-theme='oswald'] .ranking-panel,
+[data-theme='oswald'] .result-row { border-width: 2px; border-color: var(--ink); }
+[data-theme='oswald'] .pick-row,
+[data-theme='oswald'] .attraction-card { border-left-width: 6px; }
+[data-theme='oswald'] .gate-card { background: rgba(24, 28, 34, 0.82); }
+
+/* ═══ VELVET PREMIERE (sleek) ═══ */
+[data-theme='sleek'] {
+  --red: #cfa63f;
+  --red-deep: #b28a26;
+  --gold: #e8cd7a;
+  --gold-deep: #cfa63f;
+  --ink: #0d0c10;
+  --glove: #16151b;
+  --sky: #08070b;
+  --sky-2: #121017;
+  --sky-3: #1c1922;
+  --sky-4: #241f2b;
+  --cream: #0e0d12;
+  --paper: #1b1922;
+  --card: #16151c;
+  --card-hi: #1c1a23;
+  --text: #f2efe7;
+  --text-2: #9b95a5;
+  --text-on-dark: #f2efe7;
+  --dim-on-dark: #9b95a5;
+  --magic: #b98e8e;
+  --animal: #8ba98f;
+  --epcot: #8d9cc0;
+  --studios: #c0a184;
+  --line: #262430;
+  --chip: #201e29;
+  --track: #262430;
+  --hover: #201e29;
+  --topbar-bg: rgba(14, 13, 18, 0.82);
+  --paper-dot: rgba(255, 255, 255, 0.022);
+  --display: 'Outfit', 'Nunito', sans-serif;
+  --body: 'Outfit', 'Nunito', sans-serif;
+  --radius-card: 14px;
+  --radius-tile: 10px;
+  --shadow-card: none;
+  --shadow-pop: 0 0 0 1px #322f3e;
+}
+/* signature: whisper-weight display, letterboxed calm, gold-leaf accents */
+[data-theme='sleek'] :is(h1, h2, h3) { font-weight: 300; letter-spacing: 0.005em; }
+[data-theme='sleek'] .gate-card h1 span,
+[data-theme='sleek'] .hero-copy h1 em { font-weight: 500; }
+[data-theme='sleek'] body { background: var(--cream); }
+[data-theme='sleek'] .ear-medallion { color: var(--gold-deep); }
+[data-theme='sleek'] .ear-medallion text { fill: #0d0c10; }
+[data-theme='sleek'] .pick-watch,
+[data-theme='sleek'] .watch-link { background: var(--chip); color: var(--gold); border: 1px solid var(--line); }
+[data-theme='sleek'] .add-pick { color: #0d0c10; box-shadow: none; }
+[data-theme='sleek'] .name-row button,
+[data-theme='sleek'] .primary-link { color: #0d0c10; box-shadow: none; }
+[data-theme='sleek'] .remove-pick { background: #241f24; color: #d8a5a5; }
+[data-theme='sleek'] .topbar nav button.active { background: var(--gold); color: #0d0c10; }
+[data-theme='sleek'] .topbar nav button.active .count { background: #0d0c10; color: var(--gold); }
+[data-theme='sleek'] .share-button { border-color: var(--gold-deep); box-shadow: 0 5px 0 var(--gold-deep); color: #0d0c10; }
+[data-theme='sleek'] .share-button:hover { box-shadow: 0 7px 0 var(--gold-deep); }
+[data-theme='sleek'] .avatar { background: var(--gold); color: #0d0c10; }
+[data-theme='sleek'] .aside-card.gold { background: linear-gradient(150deg, #241f14, #2e2718); color: #cbb87c; border-color: #3d3420; }
+[data-theme='sleek'] .aside-card.gold h3 { color: #e8cd7a; }
+[data-theme='sleek'] .aside-card.gold .eyebrow { color: #cfa63f; }
+[data-theme='sleek'] .result-row.podium { background: linear-gradient(140deg, #221d10, #2c2514); border-color: #4a3d1c; }
+[data-theme='sleek'] .results-cta { background: var(--gold); color: #0d0c10; box-shadow: none; }
+[data-theme='sleek'] .empty-state .gate-ears { color: #322f3e; }
+
+/* ═══ STEAMBOAT · 1928 (pure black & white) ═══ */
+[data-theme='steamboat'] {
+  --red: #2f2f2f;
+  --red-deep: #000000;
+  --gold: #ffffff;
+  --gold-deep: #bdbdbd;
+  --ink: #000000;
+  --sky: #0a0a0a;
+  --sky-2: #161616;
+  --sky-3: #222222;
+  --sky-4: #2c2c2c;
+  --cream: #ffffff;
+  --paper: #f2f2f2;
+  --card: #ffffff;
+  --card-hi: #ffffff;
+  --text: #111111;
+  --text-2: #6d6d6d;
+  --text-on-dark: #ffffff;
+  --dim-on-dark: #a5a5a5;
+  --magic: #111111;
+  --animal: #3d3d3d;
+  --epcot: #6a6a6a;
+  --studios: #8f8f8f;
+  --line: #dddddd;
+  --chip: #efefef;
+  --track: #e6e6e6;
+  --hover: #efefef;
+  --topbar-bg: rgba(255, 255, 255, 0.9);
+  --paper-dot: rgba(0, 0, 0, 0.045);
+  --radius-card: 8px;
+  --radius-tile: 8px;
+  --shadow-card: none;
+  --shadow-pop: 0 0 0 2px #111111;
+}
+/* signature: everything achromatic, grain like 1928 film stock */
+[data-theme='steamboat'] img { filter: grayscale(1) contrast(1.08); }
+[data-theme='steamboat'] .app-shell::after {
+  content: ''; position: fixed; inset: 0; z-index: 80; pointer-events: none;
+  background: var(--grain); background-size: 140px; opacity: 0.10; mix-blend-mode: multiply;
+}
+[data-theme='steamboat'] .attraction-card,
+[data-theme='steamboat'] .pick-row,
+[data-theme='steamboat'] .ranking-panel,
+[data-theme='steamboat'] .aside-card,
+[data-theme='steamboat'] .result-row,
+[data-theme='steamboat'] .results-note,
+[data-theme='steamboat'] .progress-strip { border: 2px solid #111111; }
+[data-theme='steamboat'] .attraction-card { border-top-width: 6px; }
+[data-theme='steamboat'] .pick-row { border-left-width: 6px; }
+[data-theme='steamboat'] .test-room-banner,
+[data-theme='steamboat'] .test-room-gate,
+[data-theme='steamboat'] .test-watermark { background: repeating-linear-gradient(-45deg, #ffffff 0 18px, #dcdcdc 18px 36px); }
+[data-theme='steamboat'] .aside-card.gold { background: #111111; color: #cfcfcf; border-color: #111111; }
+[data-theme='steamboat'] .aside-card.gold h3 { color: #ffffff; }
+[data-theme='steamboat'] .aside-card.gold .eyebrow { color: #cfcfcf; }
+[data-theme='steamboat'] .result-row.podium { background: #111111; border-color: #111111; }
+[data-theme='steamboat'] .result-row.podium :is(strong, b, span, .result-rank) { color: #ffffff; }
+[data-theme='steamboat'] .result-row.podium .points b { color: #ffffff; }
+[data-theme='steamboat'] .progress-track span { background: repeating-linear-gradient(-55deg, #ffffff 0 7px, #111111 7px 14px); }
+[data-theme='steamboat'] .name-row button,
+[data-theme='steamboat'] .primary-link,
+[data-theme='steamboat'] .add-pick { background: #111111; color: #ffffff; box-shadow: none; }
+[data-theme='steamboat'] .hero-banner::after { background: radial-gradient(circle at 9px 7px, #ffffff 3.2px, rgba(255, 255, 255, 0.2) 4.6px, transparent 5.6px) 0 0 / 36px 14px repeat-x; }
+[data-theme='steamboat'] .selected-rank .ear-medallion { color: #111111; }
+[data-theme='steamboat'] .remove-pick { background: #eaeaea; color: #111111; }
+[data-theme='steamboat'] .remove-pick:hover { background: #dddddd; }
+[data-theme='steamboat'] .availability { background: #eaeaea; color: #111111; }
+
+/* ═══ FANTASIA · SORCERER MIDNIGHT ═══ */
+[data-theme='starlight'] {
+  --red: #7d5cff;
+  --red-deep: #5f3fe0;
+  --gold: #ffc72c;
+  --gold-deep: #dfa50e;
+  --ink: #191140;
+  --glove: #221a52;
+  --sky: #0a0824;
+  --sky-2: #191345;
+  --sky-3: #2c1e63;
+  --sky-4: #45258a;
+  --cream: #110d2e;
+  --paper: #221a52;
+  --card: #191541;
+  --card-hi: #201a4d;
+  --text: #efeaff;
+  --text-2: #a79fd4;
+  --text-on-dark: #efeaff;
+  --dim-on-dark: #a79fd4;
+  --magic: #ff5d8f;
+  --animal: #3fd08c;
+  --epcot: #58a6ff;
+  --studios: #ffa94d;
+  --line: #2b2364;
+  --chip: #221c55;
+  --track: #2b2364;
+  --hover: #221c55;
+  --topbar-bg: rgba(17, 13, 46, 0.82);
+  --paper-dot: rgba(255, 199, 44, 0.05);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.3), 0 18px 44px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 4px 8px rgba(0, 0, 0, 0.35), 0 28px 64px rgba(0, 0, 0, 0.55);
+}
+/* signature: constellation field behind everything, aurora glass cards */
+[data-theme='starlight'] body { background: var(--cream); }
+[data-theme='starlight'] .app-shell {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.5) 0.8px, transparent 1.3px) 0 0 / 90px 90px,
+    radial-gradient(rgba(255, 255, 255, 0.32) 0.7px, transparent 1.2px) 45px 60px / 130px 130px,
+    radial-gradient(48% 40% at 82% 0%, rgba(125, 92, 255, 0.16), transparent 70%),
+    var(--cream);
+}
+[data-theme='starlight'] .ear-medallion { color: var(--gold); }
+[data-theme='starlight'] .ear-medallion text { fill: #191140; }
+[data-theme='starlight'] .aside-card.gold { background: linear-gradient(150deg, #2c2160, #3c2a80); color: #cfc4ff; border-color: #45258a; }
+[data-theme='starlight'] .aside-card.gold h3 { color: #ffc72c; }
+[data-theme='starlight'] .aside-card.gold .eyebrow { color: #ffc72c; }
+[data-theme='starlight'] .result-row.podium { background: linear-gradient(140deg, #241c5c, #35257c); border-color: var(--gold-deep); }
+[data-theme='starlight'] .result-row.podium :is(strong, b) { color: #ffffff; }
+[data-theme='starlight'] .empty-state .gate-ears { color: #2b2364; }
+[data-theme='starlight'] .avatar { background: var(--gold); color: #191140; }
+[data-theme='starlight'] .remove-pick { background: #2b2364; color: #cfc4ff; }
+[data-theme='starlight'] .remove-pick:hover { background: #352c74; }
+[data-theme='starlight'] .availability { background: #2b2364; color: #cfc4ff; }
+
+/* ═══ DONALD · SAILOR DAY ═══ */
+[data-theme='donald'] {
+  --red: #1f4fa3;
+  --red-deep: #143a80;
+  --gold: #ffb31f;
+  --gold-deep: #dd9505;
+  --ink: #0e2246;
+  --sky: #0d2b5e;
+  --sky-2: #1f4fa3;
+  --sky-3: #2f6ac6;
+  --sky-4: #4b89dd;
+  --cream: #f4f9ff;
+  --paper: #e8f1fc;
+  --card: #ffffff;
+  --card-hi: #ffffff;
+  --text: #122647;
+  --text-2: #5b6f8f;
+  --dim-on-dark: #bcd3f2;
+  --magic: #e3273d;
+  --animal: #2f9e63;
+  --epcot: #1f4fa3;
+  --studios: #f29a37;
+  --line: #d8e5f5;
+  --chip: #e4eefb;
+  --track: #dce9f8;
+  --hover: #e4eefb;
+  --topbar-bg: rgba(244, 249, 255, 0.9);
+  --paper-dot: rgba(31, 79, 163, 0.06);
+}
+/* signature: crisp sailor stripes and a daytime sky */
+[data-theme='donald'] .app-shell {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(31, 79, 163, 0.045) 34px 38px),
+    var(--cream);
+}
+[data-theme='donald'] .gate,
+[data-theme='donald'] .hero-banner,
+[data-theme='donald'] .results-hero {
+  background:
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0 22px, transparent 22px 44px),
+    linear-gradient(168deg, var(--sky) 0%, var(--sky-2) 60%, var(--sky-3) 100%);
+}
+[data-theme='donald'] .attraction-card { border-top-color: var(--red); }
+[data-theme='donald'] .attraction-card.magic { border-top-color: var(--magic); }
+[data-theme='donald'] .attraction-card.animal { border-top-color: var(--animal); }
+[data-theme='donald'] .attraction-card.studios { border-top-color: var(--studios); }
+[data-theme='donald'] .gate .float-ear { color: #ffffff; }
+[data-theme='donald'] .test-room-banner,
+[data-theme='donald'] .test-room-gate,
+[data-theme='donald'] .test-watermark { color: #0e2246; }
+
+/* dark-ground themes share a few sanity rules */
+[data-theme='sleek'] .selected-rank .ear-medallion,
+[data-theme='starlight'] .selected-rank .ear-medallion { color: var(--gold); }
+[data-theme='sleek'] .footer, [data-theme='starlight'] footer { border-color: var(--line); }
+
+/* ═══ THE THEME DIAL — flip through all six designs ═══ */
+.theme-dial { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 16px;
+  border: 2px solid var(--ink); border-radius: 999px; background: var(--card); color: var(--text);
+  font: 800 13px/1 var(--body); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  transition: transform 160ms var(--ease-spring);
+}
+.theme-toggle:hover { transform: translateY(-2px); }
+.theme-toggle svg:first-child { color: var(--red); }
+
+.theme-panel {
+  width: min(320px, calc(100vw - 28px)); border-radius: 18px; overflow: hidden;
+  background: var(--card); border: 2px solid var(--ink); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: panel-pop 260ms var(--ease-spring) both;
+}
+@keyframes panel-pop { from { transform: translateY(14px) scale(0.95); opacity: 0; } }
+.theme-panel header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; background: var(--ink); color: var(--gold);
+}
+.theme-panel header b { font: 800 14px/1 var(--display); }
+.theme-close { display: grid; place-items: center; width: 30px; height: 30px; border: none; border-radius: 8px; background: transparent; color: inherit; }
+.theme-close:hover { background: rgba(255, 255, 255, 0.14); }
+
+.theme-list { display: flex; flex-direction: column; padding: 8px; gap: 4px; max-height: min(52vh, 420px); overflow-y: auto; }
+.theme-option {
+  display: flex; align-items: center; gap: 11px; text-align: left; padding: 9px 10px;
+  border: 2px solid transparent; border-radius: 12px; background: transparent; color: var(--text);
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.theme-option:hover { background: var(--hover); }
+.theme-option.active { border-color: var(--red); background: var(--hover); }
+.theme-swatches { display: inline-flex; flex-shrink: 0; }
+.theme-swatches i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--card); margin-left: -5px; }
+.theme-swatches i:first-child { margin-left: 0; }
+.theme-words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.theme-words b { font: 800 13.5px/1.2 var(--body); }
+.theme-words small { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+
+.theme-panel footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 9px 10px; border-top: 1px solid var(--line); color: var(--text-2);
+  font: 700 11.5px/1.3 var(--body);
+}
+.theme-panel footer span { text-align: center; min-width: 0; }
+.theme-panel footer button {
+  display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0;
+  border: 1px solid var(--line); border-radius: 9px; background: var(--card); color: var(--text);
+}
+.theme-panel footer button:hover { background: var(--hover); }
+
+@media (max-width: 640px) {
+  .theme-dial { bottom: 12px; }
+  .theme-toggle span { display: none; }
+}
