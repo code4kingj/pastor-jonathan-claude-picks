@@ -51,6 +51,10 @@
 .unofficial, .demo-note { color: #7f97b3; font-size: 11px; margin: 24px 0 0; }
 .demo-note { color: var(--gold); }
 .error-message { color: #ff9eb6; font-weight: 700; }
+.test-room-gate { margin: 0 auto 22px; padding: 13px 16px; border: 2px solid #ffce43; border-radius: 13px; color: #2d1900; background: repeating-linear-gradient(135deg,#ffd95f 0,#ffd95f 12px,#ffc83f 12px,#ffc83f 24px); box-shadow: 0 9px 24px rgba(255,196,45,.25); }
+.test-room-gate b, .test-room-gate span { display: block; }
+.test-room-gate b { font-size: 18px; letter-spacing: .14em; }
+.test-room-gate span { margin-top: 3px; font-size: 12px; font-weight: 800; }
 
 .app-shell { min-height: 100vh; background: #f4f8fd; color: #12233a; }
 .topbar { height: 72px; position: sticky; z-index: 50; top: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; padding: 0 clamp(18px, 4vw, 58px); color: white; background: rgba(4,22,47,.95); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,.1); }
@@ -62,6 +66,9 @@
 .topbar nav button.active, .topbar nav button:hover { color: white; background: rgba(255,255,255,.1); }
 .count { min-width: 20px; height: 20px; padding: 0 5px; display: grid; place-items: center; border-radius: 999px; color: #082043; background: var(--gold); font-size: 11px; }
 .share-button { justify-self: end; border: 1px solid rgba(255,255,255,.18); border-radius: 11px; padding: 10px 14px; display: flex; align-items: center; gap: 7px; color: white; background: rgba(255,255,255,.08); font-weight: 700; }
+.test-room-banner { position: sticky; z-index: 49; top: 72px; min-height: 48px; padding: 10px 18px; display: flex; align-items: center; justify-content: center; gap: 14px; text-align: center; color: #291700; background: repeating-linear-gradient(135deg,#ffdc62 0,#ffdc62 14px,#ffc83f 14px,#ffc83f 28px); border-bottom: 2px solid #e09a00; box-shadow: 0 6px 18px rgba(75,47,0,.2); }
+.test-room-banner strong { padding: 4px 9px; border-radius: 6px; color: white; background: #a83c10; letter-spacing: .13em; }
+.test-room-banner span { font-size: 13px; font-weight: 900; }
 
 .hero-banner { min-height: 510px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; padding: 70px clamp(22px, 7vw, 110px); color: white; overflow: hidden; background: radial-gradient(circle at 75% 35%, rgba(53,183,255,.28), transparent 35%), linear-gradient(120deg, #061933 0%, #0a3169 58%, #142d75 100%); }
 .hero-copy { max-width: 660px; }
@@ -214,6 +221,7 @@ footer span { display: flex; align-items: center; gap: 7px; }
   .topbar nav button { flex-direction: column; gap: 3px; font-size: 9px; }
   .topbar nav button { position: relative; font-size: 10px; }
   .topbar nav .count { position: absolute; top: 0; right: 4px; transform: none; min-width: 18px; height: 18px; }
+  .test-room-banner { position: relative; top: 0; flex-direction: column; gap: 4px; padding: 9px 12px; }
   .hero-banner { min-height: auto; grid-template-columns: 1fr; padding: 55px 24px 70px; }
   .hero-collage { width: min(500px,100%); justify-self: center; }
   .progress-strip { grid-template-columns: 1fr auto; }

@@ -185,6 +185,7 @@ function App() {
   const [syncState, setSyncState] = useState<'saved' | 'saving' | 'error'>('saved')
   const [copied, setCopied] = useState(false)
   const roomRef = useRef<FamilyRoom | null>(null)
+  const isTestRoom = room?.title.includes('Test Room') ?? false
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 7 } }),
@@ -319,6 +320,7 @@ function App() {
         <div className="stars" aria-hidden="true" />
         <section className="gate-card">
           <div className="gate-icon"><PartyPopper size={34} /></div>
+          {isTestRoom && <div className="test-room-gate"><b>TEST ROOM</b><span>Practice here—nothing you choose affects the real family results.</span></div>}
           <p className="eyebrow">A family adventure for</p>
           <h1>Pastor Jonathan’s<br /><span>Birthday Picks</span></h1>
           <p className="gate-intro">
@@ -353,6 +355,7 @@ function App() {
         </nav>
         <button className="share-button" onClick={shareRoom}>{copied ? <Check size={17} /> : <Link2 size={17} />}{copied ? 'Copied!' : 'Invite family'}</button>
       </header>
+      {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
 
       {view === 'discover' && (
         <main id="top">
