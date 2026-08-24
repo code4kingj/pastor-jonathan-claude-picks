@@ -70,7 +70,7 @@ function validRoom(value: unknown): value is FamilyRoom {
     typeof room.id === 'string' && roomPattern.test(room.id) &&
     typeof room.title === 'string' && room.title.length <= 100 &&
     room.videoId === 'Ok72hT9iOpY' &&
-    Array.isArray(room.members) && room.members.length === 1 && validMember(room.members[0]),
+    Array.isArray(room.members) && room.members.length <= 1 && room.members.every(validMember),
   )
 }
 
@@ -124,8 +124,10 @@ Deno.serve(async (request) => {
       const base = supabase.storage.from(bucket)
       const metaUpload = await base.upload(`rooms/${room.id}/meta.json`, JSON.stringify(meta), { contentType: 'application/json', upsert: false })
       if (metaUpload.error) return json({ error: 'Room could not be created' }, 500)
-      const memberUpload = await base.upload(`rooms/${room.id}/members/${members[0].id}.json`, JSON.stringify(members[0]), { contentType: 'application/json', upsert: true })
-      if (memberUpload.error) return json({ error: 'First family member could not be saved' }, 500)
+      if (members[0]) {
+        const memberUpload = await base.upload(`rooms/${room.id}/members/${members[0].id}.json`, JSON.stringify(members[0]), { contentType: 'application/json', upsert: true })
+        if (memberUpload.error) return json({ error: 'First family member could not be saved' }, 500)
+      }
       return json({ id: room.id, key }, 201)
     }
 
