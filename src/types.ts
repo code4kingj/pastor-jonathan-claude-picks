@@ -30,6 +30,12 @@ export interface FamilyMember {
   name: string
   rankings: string[]
   updatedAt: string
+  /* the design this member currently has selected (drives the theme poll) */
+  theme?: string
+  /* YYYY-MM-DD; drives age weighting (younger counts slightly more) */
+  birthday?: string
+  /* December 24 twins: real birth order for the age weighting */
+  twinOrder?: 'oldest' | 'youngest'
 }
 
 export interface FamilyRoom {

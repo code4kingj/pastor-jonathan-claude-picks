@@ -51,8 +51,10 @@ import type { Attraction, FamilyMember, FamilyRoom, Park } from './types'
 import { EarMark, ProgressEars, RankMedallion } from './components/EarMark'
 import { NightSky } from './components/NightSky'
 import { ThemeDial } from './components/ThemeDial'
+import { readStoredTheme, type ThemeId } from './themes'
 import './App.css'
 import './themes.css'
+
 
 const attractions = attractionData as Attraction[]
 const attractionById = new Map(attractions.map((item) => [item.id, item]))
@@ -75,8 +77,25 @@ function imageUrl(item: Attraction) {
   return `${import.meta.env.BASE_URL}${item.image}`
 }
 
-function makeMember(name: string): FamilyMember {
-  return { id: crypto.randomUUID(), name: name.trim(), rankings: [], updatedAt: new Date().toISOString() }
+function makeMember(name: string, birthday: string, twinOrder: '' | 'oldest' | 'youngest'): FamilyMember {
+  return {
+    id: crypto.randomUUID(),
+    name: name.trim(),
+    rankings: [],
+    updatedAt: new Date().toISOString(),
+    birthday,
+    ...(twinOrder ? { twinOrder } : {}),
+    theme: readStoredTheme(),
+  }
+}
+
+function isTwinBirthday(birthday: string) {
+  return birthday.slice(5) === '12-24'
+}
+
+function formatPoints(points: number) {
+  const rounded = Math.round(points * 10) / 10
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1)
 }
 
 function memberStorageKey(roomId: string) {
@@ -202,6 +221,9 @@ function App() {
   const [room, setRoom] = useState<FamilyRoom | null>(null)
   const [member, setMember] = useState<FamilyMember | null>(null)
   const [name, setName] = useState('')
+  const [birthday, setBirthday] = useState('')
+  const [twinOrder, setTwinOrder] = useState<'' | 'oldest' | 'youngest'>('')
+  const [currentTheme, setCurrentTheme] = useState<ThemeId>(() => readStoredTheme())
   const [view, setView] = useState<'discover' | 'rank' | 'results'>('discover')
   const [search, setSearch] = useState('')
   const [park, setPark] = useState<(typeof parks)[number]>('All parks')
@@ -212,6 +234,11 @@ function App() {
   const [copied, setCopied] = useState(false)
   const roomRef = useRef<FamilyRoom | null>(null)
   const isTestRoom = room?.title.includes('Test Room') ?? false
+
+  function chooseTheme(id: ThemeId) {
+    setCurrentTheme(id)
+    setMember((current) => (current && current.theme !== id ? { ...current, theme: id } : current))
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 7 } }),
@@ -251,6 +278,8 @@ function App() {
     roomRef.current = room
   }, [room])
 
+
+
   useEffect(() => {
     if (!credentials || credentials.key === 'local') return
     const timer = window.setInterval(() => {
@@ -264,6 +293,9 @@ function App() {
   const rankedAttractions = ranking.map((id) => attractionById.get(id)).filter(Boolean) as Attraction[]
   const members = mergeLocalMember(room, member)
   const results = aggregateRankings(attractions, members)
+  const themePoll: Record<string, number> = {}
+  members.forEach((item) => { if (item.theme) themePoll[item.theme] = (themePoll[item.theme] ?? 0) + 1 })
+  const tallied = Math.min(ranking.length, TOP_LIMIT)
   const filtered = attractions.filter((item) => {
     const haystack = `${item.name} ${item.description} ${item.area}`.toLowerCase()
     return (
@@ -274,9 +306,9 @@ function App() {
   })
 
   async function startRoom() {
-    if (!name.trim()) return
+    if (!name.trim() || !birthday) return
     setError('')
-    const firstMember = makeMember(name)
+    const firstMember = makeMember(name, birthday, twinOrder)
     const now = new Date().toISOString()
     const draft: FamilyRoom = {
       version: 1,
@@ -303,24 +335,20 @@ function App() {
   }
 
   function joinRoom() {
-    if (!name.trim() || !room) return
-    const joined = makeMember(name)
+    if (!name.trim() || !birthday || !room) return
+    const joined = makeMember(name, birthday, twinOrder)
     if (credentials) localStorage.setItem(memberStorageKey(credentials.id), joined.id)
     setMember(joined)
   }
 
   function updateRanking(next: string[]) {
     setSyncState('saving')
-    setMember((current) => current ? { ...current, rankings: next.slice(0, TOP_LIMIT) } : current)
+    setMember((current) => current ? { ...current, rankings: next } : current)
   }
 
   function togglePick(id: string) {
     if (selected.has(id)) updateRanking(ranking.filter((item) => item !== id))
-    else {
-      const next = addToRanking(ranking, id)
-      updateRanking(next)
-      if (next.length === TOP_LIMIT) setView('rank')
-    }
+    else updateRanking(addToRanking(ranking, id))
   }
 
   function dragEnded(event: DragEndEvent) {
@@ -343,7 +371,7 @@ function App() {
           <EarMark className="gate-ears" />
           <h1>Opening the birthday room…</h1>
         </div>
-        <ThemeDial />
+        <ThemeDial value={currentTheme} onChange={chooseTheme} />
       </main>
     )
   }
@@ -371,14 +399,35 @@ function App() {
             <label htmlFor="name">What should the family call you?</label>
             <div className="name-row">
               <input id="name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Your first name" maxLength={32} />
-              <button type="submit" className="shimmer" disabled={!name.trim()}>{joining ? 'Join the room' : 'Start our room'} <Sparkles size={18} /></button>
+            </div>
+            <label htmlFor="birthday" className="birthday-label">When is your birthday?</label>
+            <div className="name-row">
+              <input
+                id="birthday"
+                type="date"
+                value={birthday}
+                max={new Date().toISOString().slice(0, 10)}
+                onChange={(event) => { setBirthday(event.target.value); if (!isTwinBirthday(event.target.value)) setTwinOrder('') }}
+              />
+            </div>
+            {isTwinBirthday(birthday) && (
+              <fieldset className="twin-question">
+                <legend>December 24! Are you the oldest or youngest twin?</legend>
+                <label><input type="radio" name="twin" checked={twinOrder === 'oldest'} onChange={() => setTwinOrder('oldest')} /> Oldest twin</label>
+                <label><input type="radio" name="twin" checked={twinOrder === 'youngest'} onChange={() => setTwinOrder('youngest')} /> Youngest twin</label>
+              </fieldset>
+            )}
+            <div className="name-row submit-row">
+              <button type="submit" className="shimmer" disabled={!name.trim() || !birthday || (isTwinBirthday(birthday) && !twinOrder)}>
+                {joining ? 'Join the room' : 'Start our room'} <Sparkles size={18} />
+              </button>
             </div>
           </form>
           {error && <p className="error-message">{error}</p>}
           {!isSharedModeAvailable && <p className="demo-note">Local preview mode is active until shared storage is connected.</p>}
           <p className="unofficial">A private family planner inspired by the magic of the parks. Not affiliated with or endorsed by Disney.</p>
         </section>
-        <ThemeDial />
+        <ThemeDial value={currentTheme} onChange={chooseTheme} />
       </main>
     )
   }
@@ -412,14 +461,14 @@ function App() {
             </div>
             <div className="hero-collage" aria-hidden="true">
               {[attractions[7], attractions[57], attractions[106], attractions[149]].map((item) => <img key={item.id} src={imageUrl(item)} alt="" />)}
-              <div className="hero-medallion"><ProgressEars value={ranking.length} max={TOP_LIMIT} size={104} /><small>{ranking.length} of 33 picked</small></div>
+              <div className="hero-medallion"><ProgressEars value={tallied} max={TOP_LIMIT} size={104} /><small>{ranking.length} picked · top {TOP_LIMIT} count</small></div>
             </div>
           </section>
 
           <section className="progress-strip" aria-label="Your progress">
             <div className="progress-identity"><span className="avatar">{member.name.slice(0, 1).toUpperCase()}</span><p><b>{member.name}’s adventure list</b><small>{syncState === 'saved' ? 'Saved to the family room' : syncState === 'saving' ? 'Saving your picks…' : 'Could not sync'}</small></p></div>
-            <div className="progress-track"><span style={{ width: `${(ranking.length / TOP_LIMIT) * 100}%` }} /></div>
-            <strong>{ranking.length} / {TOP_LIMIT}</strong>
+            <div className="progress-track"><span style={{ width: `${Math.min(1, ranking.length / TOP_LIMIT) * 100}%` }} /></div>
+            <strong>{tallied} / {TOP_LIMIT}{ranking.length > TOP_LIMIT ? ` · ${ranking.length} picked` : ''}</strong>
           </section>
 
           <section className="catalog-section">
@@ -448,17 +497,26 @@ function App() {
           </section>
           <div className="rank-layout">
             <section className="ranking-panel">
-              <div className="panel-title"><div><h2>{member.name}’s list</h2><p>{ranking.length === TOP_LIMIT ? 'Complete and ready for the family reveal!' : `Choose ${TOP_LIMIT - ranking.length} more to complete your list.`}</p></div><strong>{ranking.length}/{TOP_LIMIT}</strong></div>
+              <div className="panel-title"><div><h2>{member.name}’s list</h2><p>{ranking.length >= TOP_LIMIT ? `${ranking.length} picked · only the top ${TOP_LIMIT} are tallied — drag your favorites above the line.` : `Choose ${TOP_LIMIT - ranking.length} more to fill your Top ${TOP_LIMIT} — pick as many as you like.`}</p></div><strong>{tallied}/{TOP_LIMIT}</strong></div>
               {rankedAttractions.length ? (
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnded}>
                   <SortableContext items={ranking} strategy={verticalListSortingStrategy}>
-                    <div className="pick-list">{rankedAttractions.map((item, index) => <SortablePick key={item.id} item={item} rank={index + 1} total={ranking.length} onMove={(direction) => updateRanking(moveItem(ranking, index, index + direction))} onRemove={() => togglePick(item.id)} />)}</div>
+                    <div className="pick-list">{rankedAttractions.map((item, index) => (
+                      <div key={item.id} className={index >= TOP_LIMIT ? 'below-line' : undefined}>
+                        {index === TOP_LIMIT && (
+                          <div className="tally-line" role="separator" aria-label="Tally cutoff">
+                            <span>TALLY LINE · picks below here don’t count — drag favorites up</span>
+                          </div>
+                        )}
+                        <SortablePick item={item} rank={index + 1} total={ranking.length} onMove={(direction) => updateRanking(moveItem(ranking, index, index + direction))} onRemove={() => togglePick(item.id)} />
+                      </div>
+                    ))}</div>
                   </SortableContext>
                 </DndContext>
               ) : <div className="empty-state"><EarMark className="gate-ears" /><h3>Your list is waiting for some magic.</h3><button onClick={() => setView('discover')}>Browse all experiences</button></div>}
             </section>
             <aside className="rank-aside">
-              <div className="aside-card gold"><Crown size={27} /><h3>How family scoring works</h3><p>Your #1 receives 33 points. Each following rank receives one fewer. Shared favorites naturally rise to the top.</p></div>
+              <div className="aside-card gold"><Crown size={27} /><h3>How family scoring works</h3><p>Your #1 earns 33 points, #2 earns 32, down to 1 point at #33 — picks below the tally line earn nothing until you move them up. Younger voices count a little extra: the youngest’s points are boosted ×1.15 and the oldest’s gently trimmed to ×0.85, scaled by birthday in between.</p></div>
               <div className="aside-card"><Users size={25} /><h3>{members.length} family {members.length === 1 ? 'member' : 'members'} joined</h3><div className="member-chips">{members.map((item) => <span key={item.id}>{item.name} <small>{item.rankings.length}/33</small></span>)}</div></div>
               <button className="results-cta shimmer" onClick={() => setView('results')}><BarChart3 size={19} /> See family results</button>
             </aside>
@@ -491,17 +549,17 @@ function App() {
                   <div className="result-rank">{index < 3 ? <Crown size={19} fill="currentColor" /> : null}<b>{index + 1}</b></div>
                   <div className="result-attraction"><img src={imageUrl(item)} alt="" /><div><strong>{item.name}</strong><span>{item.park} · {item.area}</span></div></div>
                   <div className="family-love"><span><Users size={16} /> {result.voters}/{members.length} picked it</span><span><Crown size={15} /> {result.firstPlaceVotes} first-place</span><span><Clock3 size={15} /> avg #{result.averageRank.toFixed(1)}</span></div>
-                  <div className="points"><b>{result.points}</b><small>points</small></div>
+                  <div className="points"><b>{formatPoints(result.points)}</b><small>points</small></div>
                 </article>
               })}
             </section>
           ) : <section className="empty-results"><BarChart3 size={42} /><h2>The results appear after the first picks.</h2><button onClick={() => setView('discover')}>Start choosing</button></section>}
-          <div className="results-note"><WandSparkles size={22} /><p><b>Transparent tie-break:</b> total rank points, then number of family wishlists, first-place votes, average rank, and finally video order.</p></div>
+          <div className="results-note"><WandSparkles size={22} /><p><b>Transparent scoring:</b> rank points are age-weighted (youngest ×1.15 → oldest ×0.85 by birthday). Ties break by number of family wishlists, first-place votes, average rank, then video order.</p></div>
         </main>
       )}
 
       <footer><span><EarMark size={16} color="var(--red)" /> Made with love for Pastor Jonathan’s birthday</span><span>Unofficial private family planner · Attraction frames come from the supplied source video.</span></footer>
-      <ThemeDial />
+      <ThemeDial value={currentTheme} onChange={chooseTheme} poll={themePoll} />
     </div>
   )
 }

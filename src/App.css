@@ -123,6 +123,22 @@
 .name-row button:active { transform: translateY(0) scale(0.98); }
 .name-row button:disabled { opacity: 0.55; box-shadow: none; transform: none; cursor: not-allowed; }
 
+.birthday-label { margin-top: 16px; }
+.gate-card input[type='date'] {
+  flex: 1; min-width: 0; min-height: 52px; padding: 0 18px; border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.94);
+  color: var(--ink); font-weight: 700; font-size: 16px;
+}
+.twin-question {
+  margin: 14px auto 0; max-width: 460px; padding: 14px 16px; border-radius: 16px;
+  border: 2px dashed rgba(255, 255, 255, 0.3); display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+}
+.twin-question legend { font: 800 13px/1.4 var(--body); color: var(--gold); padding: 0 8px; }
+.twin-question label { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: 14px; min-height: 44px; cursor: pointer; }
+.twin-question input { width: 18px; height: 18px; accent-color: var(--gold); }
+.submit-row { margin-top: 16px; }
+.submit-row button { flex: 1; justify-content: center; }
+
 .error-message { margin-top: 14px; font-weight: 700; color: #ffb3bd; }
 .demo-note { margin-top: 14px; font-size: 13px; color: var(--dim-on-dark); }
 .unofficial { margin-top: 22px; font-size: 12px; line-height: 1.6; color: var(--dim-on-dark); opacity: 0.85; }
@@ -397,6 +413,18 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 .panel-title > strong { font: 800 22px/1 var(--display); color: var(--red); white-space: nowrap; }
 
 .pick-list { display: flex; flex-direction: column; gap: 12px; }
+.pick-list > div { display: contents; }
+
+/* the tally cutoff: everything below earns nothing until dragged up */
+.tally-line {
+  display: flex; align-items: center; gap: 12px; margin: 6px 0;
+  font: 900 11.5px/1.3 var(--body); letter-spacing: 0.1em; color: var(--red-deep);
+}
+.tally-line::before, .tally-line::after {
+  content: ''; flex: 1; border-top: 3px dashed var(--red);
+}
+.below-line .pick-row { opacity: 0.62; background: var(--chip); }
+.below-line .ear-medallion { opacity: 0.45; }
 
 /* the collectible ticket row */
 .pick-row {

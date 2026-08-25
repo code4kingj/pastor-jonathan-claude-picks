@@ -384,6 +384,10 @@
 }
 /* signature: flat bright turtleneck orange — no texture — hat-green accents */
 [data-theme='goofy'] .app-shell { background: var(--cream); }
+[data-theme='goofy'] .hero-actions > button {
+  background: #17130d; border-color: #17130d; color: #ffce54;
+}
+[data-theme='goofy'] .hero-actions > button:hover { border-color: #000000; background: #000000; color: #ffce54; }
 [data-theme='goofy'] .gate .float-ear { color: #2e7d4f; }
 [data-theme='goofy'] .topbar nav button.active { background: #2e7d4f; color: #ffffff; }
 [data-theme='goofy'] .brand-ears { color: #2e7d4f; }
@@ -422,6 +426,16 @@
 .theme-panel header b { font: 800 14px/1 var(--display); }
 .theme-close { display: grid; place-items: center; width: 30px; height: 30px; border: none; border-radius: 8px; background: transparent; color: inherit; }
 .theme-close:hover { background: rgba(255, 255, 255, 0.14); }
+
+.theme-poll-note {
+  padding: 9px 14px 0; font: 700 11.5px/1.4 var(--body); color: var(--text-2);
+}
+.theme-votes {
+  margin-left: auto; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;
+  min-width: 26px; height: 24px; padding: 0 8px; border-radius: 999px; justify-content: center;
+  background: var(--chip); color: var(--text-2); font: 800 12px/1 var(--body);
+}
+.theme-votes.leading { background: var(--gold); color: #4c3805; }
 
 .theme-list { display: flex; flex-direction: column; padding: 8px; gap: 4px; max-height: min(52vh, 420px); overflow-y: auto; }
 .theme-option {
