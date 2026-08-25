@@ -253,6 +253,21 @@
 }
 .profile-switch:hover { color: var(--text); border-color: var(--text-2); }
 
+.qr-button {
+  width: 44px; height: 44px; display: grid; place-items: center; flex-shrink: 0;
+  border: 2px solid var(--ink); border-radius: 12px; background: var(--card); color: var(--ink);
+  transition: transform 150ms var(--ease-spring), background 150ms ease;
+}
+.qr-button:hover { transform: translateY(-2px); background: var(--hover); }
+
+.qr-card { text-align: center; }
+.qr-frame {
+  display: grid; place-items: center; margin: 4px 18px 0; padding: 14px;
+  background: #ffffff; border-radius: 16px; border: 2px solid var(--line);
+}
+.qr-frame canvas { display: block; max-width: 100%; height: auto !important; }
+.qr-hint { margin: 12px 22px 4px; font-size: 13.5px; line-height: 1.55; color: var(--text-2); font-weight: 600; }
+
 /* sync badge */
 .sync-state { font: 800 12px/1 var(--body); color: var(--text-2); display: inline-flex; align-items: center; gap: 6px; }
 .sync-state.error { color: var(--red-deep); }

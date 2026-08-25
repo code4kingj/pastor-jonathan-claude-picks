@@ -51,6 +51,7 @@ import type { Attraction, FamilyMember, FamilyRoom, Park } from './types'
 import { EarMark, ProgressEars, RankMedallion } from './components/EarMark'
 import { NightSky } from './components/NightSky'
 import { ThemeDial } from './components/ThemeDial'
+import { QrInvite } from './components/QrInvite'
 import { readStoredTheme, type ThemeId } from './themes'
 
 /* extra web-sourced pictures per attraction, downloaded at build time with
@@ -329,6 +330,7 @@ function App() {
   const [syncState, setSyncState] = useState<'saved' | 'saving' | 'error'>('saved')
   const [copied, setCopied] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [qrOpen, setQrOpen] = useState(false)
   const [media, setMedia] = useState<MediaManifest>({})
   const roomRef = useRef<FamilyRoom | null>(null)
   const isTestRoom = room?.title.includes('Test Room') ?? false
@@ -581,8 +583,14 @@ function App() {
         </nav>
         <button className="avatar-button" aria-label="Edit my info" title="Edit my info" onClick={() => setProfileOpen(true)}>{member.name.slice(0, 1).toUpperCase()}</button>
         <button className="share-button shimmer" onClick={shareRoom}>{copied ? <Check size={17} /> : <Link2 size={17} />}{copied ? 'Copied!' : 'Invite family'}</button>
+        <button className="qr-button" aria-label="Show QR code to join by camera" title="Join by camera" onClick={() => setQrOpen(true)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10-2h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
+          </svg>
+        </button>
       </header>
       {profileOpen && <ProfileEditor member={member} onSave={saveProfile} onSwitch={switchPerson} onClose={() => setProfileOpen(false)} />}
+      {qrOpen && <QrInvite onClose={() => setQrOpen(false)} />}
       {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
       {isTestRoom && <div className="test-watermark" aria-hidden="true">TEST ROOM</div>}
 
