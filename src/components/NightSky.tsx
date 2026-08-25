@@ -14,10 +14,10 @@ const HUES = ['#ffc72c', '#e3273d', '#7ab8ff', '#ff9de2', '#9dffc7']
 const THEME_HUES: Record<string, string[]> = {
   minnie: ['#ff9ec0', '#e42a63', '#ffffff', '#ffd3e2', '#ffc72c'],
   oswald: ['#f4ead8', '#7fa8d0', '#2f5f8f', '#d9b13b', '#ffffff'],
-  sleek: ['#e8cd7a', '#cfa63f', '#f2efe7', '#9b95a5', '#ffffff'],
-  steamboat: ['#ffffff', '#dddddd', '#bbbbbb', '#f2f2f2', '#999999'],
-  starlight: ['#7d5cff', '#58a6ff', '#ffc72c', '#ff5d8f', '#9dffc7'],
-  donald: ['#ffffff', '#ffb31f', '#7ab8ff', '#bcd3f2', '#ffd97a'],
+  'oswald-bw': ['#ffffff', '#dddddd', '#bbbbbb', '#f2f2f2', '#999999'],
+  buzz: ['#b6f542', '#8d6fe8', '#ffffff', '#d5c8ff', '#7ab8ff'],
+  cheshire: ['#e4569f', '#b06cf0', '#f9c8ff', '#8a5cff', '#ffffff'],
+  goofy: ['#f28c28', '#9fdc7a', '#fdf6e3', '#ffd97a', '#6fcf97'],
 }
 
 function currentHues() {

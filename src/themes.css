@@ -1,10 +1,27 @@
 /* ═════════════════════════════════════════════════════════════════════════════
-   SIX DESIGN CANDIDATES — token repaints + signature textures per theme.
+   SIX CHARACTER DESIGNS — token repaints + signature textures per theme.
+   Oswald carries a Color / B&W mode (the B&W is the same press, drained).
    Sources studied on styles.refero.design (see themes.ts). The default
-   (no data-theme / 'mickey') lives in index.css + App.css untouched.
+   ('mickey') lives in index.css + App.css untouched.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Outfit:wght@200;300;400;500;600&display=swap');
+
+/* ── character marks: every EarMark carries six silhouettes; the active theme
+   decides which shows, so the graphics resemble that theme's character ── */
+.ear-svg :is(.mark-minnie, .mark-oswald, .mark-goofy, .mark-cheshire, .mark-buzz) { display: none; }
+[data-theme='minnie'] .ear-svg .mark-mickey { display: none; }
+[data-theme='minnie'] .ear-svg .mark-minnie { display: initial; }
+[data-theme='oswald'] .ear-svg .mark-mickey,
+[data-theme='oswald-bw'] .ear-svg .mark-mickey { display: none; }
+[data-theme='oswald'] .ear-svg .mark-oswald,
+[data-theme='oswald-bw'] .ear-svg .mark-oswald { display: initial; }
+[data-theme='goofy'] .ear-svg .mark-mickey { display: none; }
+[data-theme='goofy'] .ear-svg .mark-goofy { display: initial; }
+[data-theme='cheshire'] .ear-svg .mark-mickey { display: none; }
+[data-theme='cheshire'] .ear-svg .mark-cheshire { display: initial; }
+[data-theme='buzz'] .ear-svg .mark-mickey { display: none; }
+[data-theme='buzz'] .ear-svg .mark-buzz { display: initial; }
 
 /* ═══ MINNIE · POLKA PARLOR ═══ */
 [data-theme='minnie'] {
@@ -17,8 +34,8 @@
   --sky-2: #47102f;
   --sky-3: #6b1a3f;
   --sky-4: #8f2247;
-  --cream: #fff3f7;
-  --paper: #ffe4ee;
+  --cream: #ffe4ee;
+  --paper: #ffd3e2;
   --card-hi: #fffafc;
   --text: #331722;
   --text-2: #7c5a68;
@@ -28,15 +45,19 @@
   --chip: #fbe2ec;
   --track: #f8dce8;
   --hover: #fbe2ec;
-  --topbar-bg: rgba(255, 243, 247, 0.88);
-  --paper-dot: rgba(228, 42, 99, 0.09);
+  --topbar-bg: rgba(255, 240, 246, 0.9);
+  --paper-dot: rgba(255, 255, 255, 0.85);
+  --ticket: #fff3f7;
+  --page-fg: var(--text);
+  --page-fg-2: var(--text-2);
+  --page-accent: var(--red);
 }
 /* signature: big white polka dots on rose surfaces */
 [data-theme='minnie'] .app-shell {
   background:
-    radial-gradient(rgba(255, 255, 255, 0.85) 5px, transparent 5.6px) 0 0 / 46px 46px,
-    radial-gradient(rgba(255, 255, 255, 0.85) 5px, transparent 5.6px) 23px 23px / 46px 46px,
-    #ffe4ee;
+    radial-gradient(var(--paper-dot) 5px, transparent 5.6px) 0 0 / 46px 46px,
+    radial-gradient(var(--paper-dot) 5px, transparent 5.6px) 23px 23px / 46px 46px,
+    var(--cream);
 }
 [data-theme='minnie'] .gate,
 [data-theme='minnie'] .hero-banner,
@@ -48,8 +69,16 @@
 }
 [data-theme='minnie'] .attraction-card { border-radius: 26px; }
 [data-theme='minnie'] .gate .float-ear { color: #ff9ec0; }
+[data-theme='minnie'] .add-pick { background: var(--red); color: #ffffff; box-shadow: 0 10px 22px rgba(228, 42, 99, 0.3); }
+[data-theme='minnie'] .add-pick:hover { background: var(--red-deep); }
 
-/* ═══ OSWALD · LUCKY PRESS ═══ */
+/* ═══ OSWALD · LUCKY PRESS (color mode) ═══ */
+[data-theme='oswald'],
+[data-theme='oswald-bw'] {
+  --display: 'Fraunces', 'Baloo 2', serif;
+  --radius-card: 14px;
+  --radius-tile: 10px;
+}
 [data-theme='oswald'] {
   --red: #2f5f8f;
   --red-deep: #234a72;
@@ -60,34 +89,35 @@
   --sky-2: #1f2c3a;
   --sky-3: #2f4256;
   --sky-4: #3c536b;
-  --cream: #f4ead8;
-  --paper: #ecdfc6;
+  --cream: #dce9f7;
+  --paper: #ccdff2;
   --card: #faf3e3;
   --card-hi: #fdf8ec;
-  --text: #241f17;
-  --text-2: #6e6350;
+  --text: #1d2732;
+  --text-2: #55677c;
   --text-on-dark: #f3ecda;
-  --dim-on-dark: #b8ad93;
+  --dim-on-dark: #b8c6d8;
   --magic: #b3402f;
   --animal: #4c7a4c;
   --epcot: #2f5f8f;
   --studios: #c07f2e;
-  --line: #ddceac;
-  --chip: #eadfc4;
-  --track: #e5d8ba;
-  --hover: #eadfc4;
-  --topbar-bg: rgba(244, 234, 216, 0.9);
-  --paper-dot: rgba(28, 25, 20, 0.06);
-  --display: 'Fraunces', 'Baloo 2', serif;
-  --radius-card: 14px;
-  --radius-tile: 10px;
+  --line: #bcd2e8;
+  --chip: #cfe0f1;
+  --track: #c7daee;
+  --hover: #cfe0f1;
+  --topbar-bg: rgba(220, 233, 247, 0.9);
+  --paper-dot: rgba(31, 62, 95, 0.1);
+  --ticket: #eef4fb;
+  --page-fg: var(--text);
+  --page-fg-2: var(--text-2);
+  --page-accent: var(--red);
   --shadow-card: 0 1px 2px rgba(28, 25, 20, 0.08), 0 10px 24px rgba(28, 25, 20, 0.1);
   --shadow-pop: 0 2px 4px rgba(28, 25, 20, 0.1), 0 16px 36px rgba(28, 25, 20, 0.16);
 }
-/* signature: heavy halftone newsprint + slightly aged photographs */
+/* signature: halftone ink over trolley-blue press paper + aged photographs */
 [data-theme='oswald'] .app-shell {
   background:
-    radial-gradient(rgba(28, 25, 20, 0.075) 1.2px, transparent 1.7px) 0 0 / 8px 8px,
+    radial-gradient(var(--paper-dot) 1.2px, transparent 1.7px) 0 0 / 8px 8px,
     var(--cream);
 }
 [data-theme='oswald'] img { filter: sepia(0.28) contrast(1.05) saturate(0.82); }
@@ -95,74 +125,28 @@
 [data-theme='oswald'] .pick-row,
 [data-theme='oswald'] .ranking-panel,
 [data-theme='oswald'] .result-row { border-width: 2px; border-color: var(--ink); }
-[data-theme='oswald'] .pick-row,
-[data-theme='oswald'] .attraction-card { border-left-width: 6px; }
+[data-theme='oswald'] .pick-row { border-left-width: 6px; }
+[data-theme='oswald'] .attraction-card { border-top-width: 6px; }
 [data-theme='oswald'] .gate-card { background: rgba(24, 28, 34, 0.82); }
-
-/* ═══ VELVET PREMIERE (sleek) ═══ */
-[data-theme='sleek'] {
-  --red: #cfa63f;
-  --red-deep: #b28a26;
-  --gold: #e8cd7a;
-  --gold-deep: #cfa63f;
-  --ink: #0d0c10;
-  --glove: #16151b;
-  --sky: #08070b;
-  --sky-2: #121017;
-  --sky-3: #1c1922;
-  --sky-4: #241f2b;
-  --cream: #0e0d12;
-  --paper: #1b1922;
-  --card: #16151c;
-  --card-hi: #1c1a23;
-  --text: #f2efe7;
-  --text-2: #9b95a5;
-  --text-on-dark: #f2efe7;
-  --dim-on-dark: #9b95a5;
-  --magic: #b98e8e;
-  --animal: #8ba98f;
-  --epcot: #8d9cc0;
-  --studios: #c0a184;
-  --line: #262430;
-  --chip: #201e29;
-  --track: #262430;
-  --hover: #201e29;
-  --topbar-bg: rgba(14, 13, 18, 0.82);
-  --paper-dot: rgba(255, 255, 255, 0.022);
-  --display: 'Outfit', 'Nunito', sans-serif;
-  --body: 'Outfit', 'Nunito', sans-serif;
-  --radius-card: 14px;
-  --radius-tile: 10px;
-  --shadow-card: none;
-  --shadow-pop: 0 0 0 1px #322f3e;
+/* the card IS Oswald's outfit: black-and-white photo on top, blue shorts below */
+[data-theme='oswald'] .card-body { background: #2f5f8f; }
+[data-theme='oswald'] .card-body h3 { color: #f8f3e6; }
+[data-theme='oswald'] .card-body .area { color: #cdddef; }
+[data-theme='oswald'] .card-body .description { color: #b9cfe6; }
+[data-theme='oswald'] .card-body .card-meta { color: #cdddef; }
+[data-theme='oswald'] .card-image::after {
+  background: radial-gradient(circle at 8px 12px, #2f5f8f 6px, transparent 6.5px) left bottom / 24px 12px repeat-x;
 }
-/* signature: whisper-weight display, letterboxed calm, gold-leaf accents */
-[data-theme='sleek'] :is(h1, h2, h3) { font-weight: 300; letter-spacing: 0.005em; }
-[data-theme='sleek'] .gate-card h1 span,
-[data-theme='sleek'] .hero-copy h1 em { font-weight: 500; }
-[data-theme='sleek'] body { background: var(--cream); }
-[data-theme='sleek'] .ear-medallion { color: var(--gold-deep); }
-[data-theme='sleek'] .ear-medallion text { fill: #0d0c10; }
-[data-theme='sleek'] .pick-watch,
-[data-theme='sleek'] .watch-link { background: var(--chip); color: var(--gold); border: 1px solid var(--line); }
-[data-theme='sleek'] .add-pick { color: #0d0c10; box-shadow: none; }
-[data-theme='sleek'] .name-row button,
-[data-theme='sleek'] .primary-link { color: #0d0c10; box-shadow: none; }
-[data-theme='sleek'] .remove-pick { background: #241f24; color: #d8a5a5; }
-[data-theme='sleek'] .topbar nav button.active { background: var(--gold); color: #0d0c10; }
-[data-theme='sleek'] .topbar nav button.active .count { background: #0d0c10; color: var(--gold); }
-[data-theme='sleek'] .share-button { border-color: var(--gold-deep); box-shadow: 0 5px 0 var(--gold-deep); color: #0d0c10; }
-[data-theme='sleek'] .share-button:hover { box-shadow: 0 7px 0 var(--gold-deep); }
-[data-theme='sleek'] .avatar { background: var(--gold); color: #0d0c10; }
-[data-theme='sleek'] .aside-card.gold { background: linear-gradient(150deg, #241f14, #2e2718); color: #cbb87c; border-color: #3d3420; }
-[data-theme='sleek'] .aside-card.gold h3 { color: #e8cd7a; }
-[data-theme='sleek'] .aside-card.gold .eyebrow { color: #cfa63f; }
-[data-theme='sleek'] .result-row.podium { background: linear-gradient(140deg, #221d10, #2c2514); border-color: #4a3d1c; }
-[data-theme='sleek'] .results-cta { background: var(--gold); color: #0d0c10; box-shadow: none; }
-[data-theme='sleek'] .empty-state .gate-ears { color: #322f3e; }
+[data-theme='oswald'] .add-pick { background: #1c1914; color: #f4ead8; box-shadow: none; }
+[data-theme='oswald'] .add-pick:hover { background: #000000; }
+[data-theme='oswald'] .remove-pick { background: #24496e; color: #dce9f5; }
+[data-theme='oswald'] .remove-pick:hover { background: #1d3c5c; }
+[data-theme='oswald'] .card-body .availability { background: #24496e; color: #ffd9b0; }
+[data-theme='oswald'] .pick-watch { background: #2f5f8f; color: #fff3d8; }
+[data-theme='oswald'] .pick-watch:hover { background: #24496e; }
 
-/* ═══ STEAMBOAT · 1928 (pure black & white) ═══ */
-[data-theme='steamboat'] {
+/* ═══ OSWALD · B&W MODE — the same press with every drop of color drained ═══ */
+[data-theme='oswald-bw'] {
   --red: #2f2f2f;
   --red-deep: #000000;
   --gold: #ffffff;
@@ -189,158 +173,232 @@
   --track: #e6e6e6;
   --hover: #efefef;
   --topbar-bg: rgba(255, 255, 255, 0.9);
-  --paper-dot: rgba(0, 0, 0, 0.045);
-  --radius-card: 8px;
-  --radius-tile: 8px;
+  --paper-dot: rgba(0, 0, 0, 0.07);
+  --ticket: #ffffff;
+  --page-fg: var(--text);
+  --page-fg-2: var(--text-2);
+  --page-accent: #111111;
   --shadow-card: none;
   --shadow-pop: 0 0 0 2px #111111;
 }
-/* signature: everything achromatic, grain like 1928 film stock */
-[data-theme='steamboat'] img { filter: grayscale(1) contrast(1.08); }
-[data-theme='steamboat'] .app-shell::after {
+[data-theme='oswald-bw'] img { filter: grayscale(1) contrast(1.08); }
+[data-theme='oswald-bw'] .app-shell {
+  background:
+    radial-gradient(var(--paper-dot) 1.2px, transparent 1.7px) 0 0 / 8px 8px,
+    #ffffff;
+}
+[data-theme='oswald-bw'] .app-shell::after {
   content: ''; position: fixed; inset: 0; z-index: 80; pointer-events: none;
   background: var(--grain); background-size: 140px; opacity: 0.10; mix-blend-mode: multiply;
 }
-[data-theme='steamboat'] .attraction-card,
-[data-theme='steamboat'] .pick-row,
-[data-theme='steamboat'] .ranking-panel,
-[data-theme='steamboat'] .aside-card,
-[data-theme='steamboat'] .result-row,
-[data-theme='steamboat'] .results-note,
-[data-theme='steamboat'] .progress-strip { border: 2px solid #111111; }
-[data-theme='steamboat'] .attraction-card { border-top-width: 6px; }
-[data-theme='steamboat'] .pick-row { border-left-width: 6px; }
-[data-theme='steamboat'] .test-room-banner,
-[data-theme='steamboat'] .test-room-gate,
-[data-theme='steamboat'] .test-watermark { background: repeating-linear-gradient(-45deg, #ffffff 0 18px, #dcdcdc 18px 36px); }
-[data-theme='steamboat'] .aside-card.gold { background: #111111; color: #cfcfcf; border-color: #111111; }
-[data-theme='steamboat'] .aside-card.gold h3 { color: #ffffff; }
-[data-theme='steamboat'] .aside-card.gold .eyebrow { color: #cfcfcf; }
-[data-theme='steamboat'] .result-row.podium { background: #111111; border-color: #111111; }
-[data-theme='steamboat'] .result-row.podium :is(strong, b, span, .result-rank) { color: #ffffff; }
-[data-theme='steamboat'] .result-row.podium .points b { color: #ffffff; }
-[data-theme='steamboat'] .progress-track span { background: repeating-linear-gradient(-55deg, #ffffff 0 7px, #111111 7px 14px); }
-[data-theme='steamboat'] .name-row button,
-[data-theme='steamboat'] .primary-link,
-[data-theme='steamboat'] .add-pick { background: #111111; color: #ffffff; box-shadow: none; }
-[data-theme='steamboat'] .hero-banner::after { background: radial-gradient(circle at 9px 7px, #ffffff 3.2px, rgba(255, 255, 255, 0.2) 4.6px, transparent 5.6px) 0 0 / 36px 14px repeat-x; }
-[data-theme='steamboat'] .selected-rank .ear-medallion { color: #111111; }
-[data-theme='steamboat'] .remove-pick { background: #eaeaea; color: #111111; }
-[data-theme='steamboat'] .remove-pick:hover { background: #dddddd; }
-[data-theme='steamboat'] .availability { background: #eaeaea; color: #111111; }
+[data-theme='oswald-bw'] .attraction-card,
+[data-theme='oswald-bw'] .pick-row,
+[data-theme='oswald-bw'] .ranking-panel,
+[data-theme='oswald-bw'] .aside-card,
+[data-theme='oswald-bw'] .result-row,
+[data-theme='oswald-bw'] .results-note,
+[data-theme='oswald-bw'] .progress-strip { border: 2px solid #111111; }
+[data-theme='oswald-bw'] .attraction-card { border-top-width: 6px; }
+[data-theme='oswald-bw'] .pick-row { border-left-width: 6px; }
+[data-theme='oswald-bw'] .card-body { background: #111111; }
+[data-theme='oswald-bw'] .card-body h3 { color: #ffffff; }
+[data-theme='oswald-bw'] .card-body .area { color: #bdbdbd; }
+[data-theme='oswald-bw'] .card-body .description { color: #a5a5a5; }
+[data-theme='oswald-bw'] .card-body .card-meta { color: #bdbdbd; }
+[data-theme='oswald-bw'] .card-image::after {
+  background: radial-gradient(circle at 8px 12px, #111111 6px, transparent 6.5px) left bottom / 24px 12px repeat-x;
+}
+[data-theme='oswald-bw'] .card-body .add-pick { background: #ffffff; color: #111111; box-shadow: none; }
+[data-theme='oswald-bw'] .card-body .add-pick:hover { background: #dddddd; }
+[data-theme='oswald-bw'] .card-body .remove-pick { background: #2c2c2c; color: #ffffff; }
+[data-theme='oswald-bw'] .card-body .remove-pick:hover { background: #3d3d3d; }
+[data-theme='oswald-bw'] .card-body .availability { background: #2c2c2c; color: #ffffff; }
+[data-theme='oswald-bw'] .card-body .watch-link { border: 2px solid #ffffff; }
+[data-theme='oswald-bw'] .selected-rank .ear-medallion { color: #111111; }
+[data-theme='oswald-bw'] .test-room-banner,
+[data-theme='oswald-bw'] .test-room-gate,
+[data-theme='oswald-bw'] .test-watermark { background: repeating-linear-gradient(-45deg, #ffffff 0 18px, #dcdcdc 18px 36px); }
+[data-theme='oswald-bw'] .aside-card.gold { background: #111111; color: #cfcfcf; border-color: #111111; }
+[data-theme='oswald-bw'] .aside-card.gold h3 { color: #ffffff; }
+[data-theme='oswald-bw'] .aside-card.gold .eyebrow { color: #cfcfcf; }
+[data-theme='oswald-bw'] .result-row.podium { background: #111111; border-color: #111111; }
+[data-theme='oswald-bw'] .result-row.podium :is(strong, b, span, .result-rank) { color: #ffffff; }
+[data-theme='oswald-bw'] .result-row.podium .points b { color: #ffffff; }
+[data-theme='oswald-bw'] .progress-track span { background: repeating-linear-gradient(-55deg, #ffffff 0 7px, #111111 7px 14px); }
+[data-theme='oswald-bw'] .name-row button,
+[data-theme='oswald-bw'] .primary-link { background: #111111; color: #ffffff; box-shadow: none; }
+[data-theme='oswald-bw'] .hero-banner::after { background: radial-gradient(circle at 9px 7px, #ffffff 3.2px, rgba(255, 255, 255, 0.2) 4.6px, transparent 5.6px) 0 0 / 36px 14px repeat-x; }
 
-/* ═══ FANTASIA · SORCERER MIDNIGHT ═══ */
-[data-theme='starlight'] {
-  --red: #7d5cff;
-  --red-deep: #5f3fe0;
-  --gold: #ffc72c;
-  --gold-deep: #dfa50e;
-  --ink: #191140;
-  --glove: #221a52;
-  --sky: #0a0824;
-  --sky-2: #191345;
-  --sky-3: #2c1e63;
-  --sky-4: #45258a;
-  --cream: #110d2e;
-  --paper: #221a52;
-  --card: #191541;
-  --card-hi: #201a4d;
-  --text: #efeaff;
-  --text-2: #a79fd4;
-  --text-on-dark: #efeaff;
-  --dim-on-dark: #a79fd4;
+/* ═══ INFINITY AND BEYOND (Buzz) ═══ */
+[data-theme='buzz'] {
+  --red: #6a3fc3;
+  --red-deep: #532fa0;
+  --gold: #b6f542;
+  --gold-deep: #8ed318;
+  --ink: #221a3a;
+  --sky: #0d0a24;
+  --sky-2: #251761;
+  --sky-3: #3b2495;
+  --sky-4: #5a35c9;
+  --cream: #f2f0fa;
+  --paper: #e6e2f5;
+  --card: #ffffff;
+  --card-hi: #fdfcff;
+  --text: #241f3c;
+  --text-2: #6b6488;
+  --dim-on-dark: #beb3e8;
+  --magic: #e3273d;
+  --animal: #2f9e63;
+  --epcot: #6a3fc3;
+  --studios: #f29a37;
+  --line: #e2dcf2;
+  --chip: #e9e4f7;
+  --track: #e2dcf2;
+  --hover: #e9e4f7;
+  --topbar-bg: rgba(242, 240, 250, 0.9);
+  --paper-dot: rgba(106, 63, 195, 0.07);
+  --ticket: #f6f4fc;
+  --page-fg: var(--text);
+  --page-fg-2: var(--text-2);
+  --page-accent: var(--red);
+  --display: 'Outfit', 'Nunito', sans-serif;
+  --body: 'Outfit', 'Nunito', sans-serif;
+}
+/* signature: space-ranger white with lime wings and a deep-space hero */
+[data-theme='buzz'] .gate,
+[data-theme='buzz'] .hero-banner,
+[data-theme='buzz'] .results-hero {
+  background:
+    radial-gradient(50% 55% at 82% 8%, rgba(182, 245, 66, 0.14), transparent 65%),
+    linear-gradient(162deg, var(--sky) 0%, var(--sky-2) 58%, var(--sky-3) 100%);
+}
+[data-theme='buzz'] .add-pick { background: var(--gold); color: #1c2a08; box-shadow: 0 10px 22px rgba(142, 211, 24, 0.35); }
+[data-theme='buzz'] .add-pick:hover { background: var(--gold-deep); }
+[data-theme='buzz'] .pick-watch,
+[data-theme='buzz'] .watch-link { background: var(--ink); color: var(--gold); }
+[data-theme='buzz'] .gate .float-ear { color: var(--gold); }
+[data-theme='buzz'] .topbar nav button.active { background: var(--red); color: #ffffff; }
+[data-theme='buzz'] .topbar nav button.active .count { background: var(--gold); color: #1c2a08; }
+[data-theme='buzz'] .selected-rank .ear-medallion { color: var(--gold); }
+[data-theme='buzz'] .selected-rank text { fill: #1c2a08; }
+
+/* ═══ CHESHIRE · MOONLIT STRIPES ═══ */
+[data-theme='cheshire'] {
+  --red: #d8449b;
+  --red-deep: #b52c7f;
+  --gold: #ffb8f0;
+  --gold-deep: #e98fd8;
+  --ink: #2a0f3d;
+  --glove: #3b1c58;
+  --sky: #1c0a2c;
+  --sky-2: #38124f;
+  --sky-3: #571d72;
+  --sky-4: #7a2c8f;
+  --cream: #2b1140;
+  --paper: #3b1c58;
+  --card: #341952;
+  --card-hi: #3d2060;
+  --text: #f8ecff;
+  --text-2: #c5a8dd;
+  --text-on-dark: #f8ecff;
+  --dim-on-dark: #c5a8dd;
   --magic: #ff5d8f;
   --animal: #3fd08c;
   --epcot: #58a6ff;
   --studios: #ffa94d;
-  --line: #2b2364;
-  --chip: #221c55;
-  --track: #2b2364;
-  --hover: #221c55;
-  --topbar-bg: rgba(17, 13, 46, 0.82);
-  --paper-dot: rgba(255, 199, 44, 0.05);
+  --line: #4a2a6b;
+  --chip: #3f2160;
+  --track: #4a2a6b;
+  --hover: #3f2160;
+  --topbar-bg: rgba(32, 12, 50, 0.85);
+  --paper-dot: rgba(255, 255, 255, 0.04);
+  --ticket: #33184e;
+  --page-fg: var(--text);
+  --page-fg-2: var(--text-2);
+  --page-accent: var(--gold);
   --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.3), 0 18px 44px rgba(0, 0, 0, 0.4);
   --shadow-pop: 0 4px 8px rgba(0, 0, 0, 0.35), 0 28px 64px rgba(0, 0, 0, 0.55);
 }
-/* signature: constellation field behind everything, aurora glass cards */
-[data-theme='starlight'] body { background: var(--cream); }
-[data-theme='starlight'] .app-shell {
+/* signature: the grin stripes — pink-on-purple diagonals over the whole ground */
+[data-theme='cheshire'] body { background: var(--cream); }
+[data-theme='cheshire'] .app-shell {
   background:
-    radial-gradient(rgba(255, 255, 255, 0.5) 0.8px, transparent 1.3px) 0 0 / 90px 90px,
-    radial-gradient(rgba(255, 255, 255, 0.32) 0.7px, transparent 1.2px) 45px 60px / 130px 130px,
-    radial-gradient(48% 40% at 82% 0%, rgba(125, 92, 255, 0.16), transparent 70%),
+    repeating-linear-gradient(-35deg, rgba(228, 86, 159, 0.11) 0 26px, transparent 26px 52px),
     var(--cream);
 }
-[data-theme='starlight'] .ear-medallion { color: var(--gold); }
-[data-theme='starlight'] .ear-medallion text { fill: #191140; }
-[data-theme='starlight'] .aside-card.gold { background: linear-gradient(150deg, #2c2160, #3c2a80); color: #cfc4ff; border-color: #45258a; }
-[data-theme='starlight'] .aside-card.gold h3 { color: #ffc72c; }
-[data-theme='starlight'] .aside-card.gold .eyebrow { color: #ffc72c; }
-[data-theme='starlight'] .result-row.podium { background: linear-gradient(140deg, #241c5c, #35257c); border-color: var(--gold-deep); }
-[data-theme='starlight'] .result-row.podium :is(strong, b) { color: #ffffff; }
-[data-theme='starlight'] .empty-state .gate-ears { color: #2b2364; }
-[data-theme='starlight'] .avatar { background: var(--gold); color: #191140; }
-[data-theme='starlight'] .remove-pick { background: #2b2364; color: #cfc4ff; }
-[data-theme='starlight'] .remove-pick:hover { background: #352c74; }
-[data-theme='starlight'] .availability { background: #2b2364; color: #cfc4ff; }
+[data-theme='cheshire'] .pick-row {
+  background:
+    repeating-linear-gradient(-35deg, rgba(228, 86, 159, 0.08) 0 18px, transparent 18px 36px),
+    var(--ticket);
+}
+[data-theme='cheshire'] .ear-medallion { color: var(--gold); }
+[data-theme='cheshire'] .ear-medallion text { fill: #2a0f3d; }
+[data-theme='cheshire'] .aside-card.gold { background: linear-gradient(150deg, #4a1e5e, #63297a); color: #f0c9ea; border-color: #7a2c8f; }
+[data-theme='cheshire'] .aside-card.gold h3 { color: #ffb8f0; }
+[data-theme='cheshire'] .aside-card.gold .eyebrow { color: #ffb8f0; }
+[data-theme='cheshire'] .result-row.podium { background: linear-gradient(140deg, #431d58, #5c2775); border-color: var(--gold-deep); }
+[data-theme='cheshire'] .result-row.podium :is(strong, b) { color: #ffffff; }
+[data-theme='cheshire'] .empty-state .gate-ears { color: #4a2a6b; }
+[data-theme='cheshire'] .avatar { background: var(--gold); color: #2a0f3d; }
+[data-theme='cheshire'] .remove-pick { background: #4a2a6b; color: #f0c9ea; }
+[data-theme='cheshire'] .remove-pick:hover { background: #573378; }
+[data-theme='cheshire'] .availability { background: #4a2a6b; color: #f0c9ea; }
+[data-theme='cheshire'] .add-pick { background: var(--red); color: #ffffff; box-shadow: 0 10px 22px rgba(216, 68, 155, 0.35); }
+[data-theme='cheshire'] .add-pick:hover { background: var(--red-deep); }
+[data-theme='cheshire'] .test-room-banner,
+[data-theme='cheshire'] .test-room-gate,
+[data-theme='cheshire'] .test-watermark { background: repeating-linear-gradient(-45deg, #ffb8f0 0 18px, #f8d9f4 18px 36px); color: #2a0f3d; border-color: #2a0f3d; }
 
-/* ═══ DONALD · SAILOR DAY ═══ */
-[data-theme='donald'] {
-  --red: #1f4fa3;
-  --red-deep: #143a80;
-  --gold: #ffb31f;
-  --gold-deep: #dd9505;
-  --ink: #0e2246;
-  --sky: #0d2b5e;
-  --sky-2: #1f4fa3;
-  --sky-3: #2f6ac6;
-  --sky-4: #4b89dd;
-  --cream: #f4f9ff;
-  --paper: #e8f1fc;
+/* ═══ GOOFY · TURTLENECK ORANGE ═══ */
+[data-theme='goofy'] {
+  --red: #2b4f9e;        /* Goofy's pants blue drives the primary buttons */
+  --red-deep: #1e3b7d;
+  --gold: #ffce54;
+  --gold-deep: #e2a92a;
+  --ink: #17130d;        /* vest black */
+  --sky: #241307;
+  --sky-2: #47280e;
+  --sky-3: #6b3c12;
+  --sky-4: #8a4f18;
+  --cream: #f6871e;
+  --paper: #e37811;
   --card: #ffffff;
-  --card-hi: #ffffff;
-  --text: #122647;
-  --text-2: #5b6f8f;
-  --dim-on-dark: #bcd3f2;
+  --card-hi: #fffcf6;
+  --text: #34240f;
+  --text-2: #7d6647;
+  --dim-on-dark: #ecc9a4;
   --magic: #e3273d;
-  --animal: #2f9e63;
-  --epcot: #1f4fa3;
-  --studios: #f29a37;
-  --line: #d8e5f5;
-  --chip: #e4eefb;
-  --track: #dce9f8;
-  --hover: #e4eefb;
-  --topbar-bg: rgba(244, 249, 255, 0.9);
-  --paper-dot: rgba(31, 79, 163, 0.06);
+  --animal: #2e7d4f;
+  --epcot: #4a7fe8;
+  --studios: #e07716;
+  --line: #f6d2a8;
+  --chip: #fadcb8;
+  --track: #f8d6ad;
+  --hover: #fadcb8;
+  --topbar-bg: rgba(255, 255, 255, 0.92);
+  --paper-dot: transparent;
+  --ticket: #fff3e2;
+  --page-fg: #ffffff;
+  --page-fg-2: #ffe4c2;
+  --page-accent: #ffce54;
 }
-/* signature: crisp sailor stripes and a daytime sky */
-[data-theme='donald'] .app-shell {
-  background:
-    repeating-linear-gradient(0deg, transparent 0 34px, rgba(31, 79, 163, 0.045) 34px 38px),
-    var(--cream);
-}
-[data-theme='donald'] .gate,
-[data-theme='donald'] .hero-banner,
-[data-theme='donald'] .results-hero {
-  background:
-    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0 22px, transparent 22px 44px),
-    linear-gradient(168deg, var(--sky) 0%, var(--sky-2) 60%, var(--sky-3) 100%);
-}
-[data-theme='donald'] .attraction-card { border-top-color: var(--red); }
-[data-theme='donald'] .attraction-card.magic { border-top-color: var(--magic); }
-[data-theme='donald'] .attraction-card.animal { border-top-color: var(--animal); }
-[data-theme='donald'] .attraction-card.studios { border-top-color: var(--studios); }
-[data-theme='donald'] .gate .float-ear { color: #ffffff; }
-[data-theme='donald'] .test-room-banner,
-[data-theme='donald'] .test-room-gate,
-[data-theme='donald'] .test-watermark { color: #0e2246; }
+/* signature: flat bright turtleneck orange — no texture — hat-green accents */
+[data-theme='goofy'] .app-shell { background: var(--cream); }
+[data-theme='goofy'] .gate .float-ear { color: #2e7d4f; }
+[data-theme='goofy'] .topbar nav button.active { background: #2e7d4f; color: #ffffff; }
+[data-theme='goofy'] .brand-ears { color: #2e7d4f; }
+[data-theme='goofy'] .test-room-banner,
+[data-theme='goofy'] .test-room-gate,
+[data-theme='goofy'] .test-watermark { color: #33210e; }
+[data-theme='goofy'] .aside-card.gold { background: linear-gradient(150deg, #fde8cf, #fbd7a8); color: #7a5210; border-color: #f0c076; }
+[data-theme='goofy'] .aside-card.gold h3 { color: #5c3c06; }
+[data-theme='goofy'] .result-row.podium { background: linear-gradient(140deg, #fdf0dc, #fbe1b8); border-color: var(--gold-deep); }
+[data-theme='goofy'] .add-pick { background: #17130d; color: #ffce54; box-shadow: 0 10px 22px rgba(23, 19, 13, 0.35); }
+[data-theme='goofy'] .add-pick:hover { background: #000000; }
+[data-theme='goofy'] .name-row button,
+[data-theme='goofy'] .primary-link { box-shadow: 0 14px 34px rgba(43, 79, 158, 0.42); }
 
-/* dark-ground themes share a few sanity rules */
-[data-theme='sleek'] .selected-rank .ear-medallion,
-[data-theme='starlight'] .selected-rank .ear-medallion { color: var(--gold); }
-[data-theme='sleek'] .footer, [data-theme='starlight'] footer { border-color: var(--line); }
-
-/* ═══ THE THEME DIAL — flip through all six designs ═══ */
+/* ═══ THE THEME DIAL — flip through the designs from any page ═══ */
 .theme-dial { position: fixed; left: 14px; bottom: 14px; z-index: 70; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .theme-toggle {
   display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 16px;
@@ -352,7 +410,7 @@
 .theme-toggle svg:first-child { color: var(--red); }
 
 .theme-panel {
-  width: min(320px, calc(100vw - 28px)); border-radius: 18px; overflow: hidden;
+  width: min(330px, calc(100vw - 28px)); border-radius: 18px; overflow: hidden;
   background: var(--card); border: 2px solid var(--ink); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   animation: panel-pop 260ms var(--ease-spring) both;
 }
@@ -379,7 +437,6 @@
 .theme-words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .theme-words b { font: 800 13.5px/1.2 var(--body); }
 .theme-words small { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
-
 .theme-panel footer {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 9px 10px; border-top: 1px solid var(--line); color: var(--text-2);

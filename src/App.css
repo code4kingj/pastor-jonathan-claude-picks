@@ -59,8 +59,8 @@
   min-height: 100dvh; display: grid; place-items: center; padding: 34px 18px;
   position: relative; overflow: hidden; isolation: isolate;
   background:
-    radial-gradient(60% 42% at 50% -6%, rgba(74, 60, 150, 0.55), transparent 70%),
-    radial-gradient(38% 30% at 82% 30%, rgba(227, 39, 61, 0.16), transparent 70%),
+    radial-gradient(60% 42% at 50% -6%, rgba(227, 39, 61, 0.28), transparent 70%),
+    radial-gradient(38% 30% at 82% 30%, rgba(255, 199, 44, 0.1), transparent 70%),
     linear-gradient(178deg, var(--sky) 0%, var(--sky-2) 62%, var(--sky-3) 100%);
 }
 .gate::after { /* grain over the night */
@@ -76,13 +76,13 @@
   border-radius: 30px; color: var(--text-on-dark);
   background:
     linear-gradient(165deg, rgba(255, 255, 255, 0.06), transparent 40%),
-    rgba(16, 10, 34, 0.72);
+    rgba(22, 11, 14, 0.74);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 34px 90px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
-@media (prefers-reduced-transparency: reduce) { .gate-card { background: #150d2c; backdrop-filter: none; -webkit-backdrop-filter: none; } }
+@media (prefers-reduced-transparency: reduce) { .gate-card { background: #1a0e12; backdrop-filter: none; -webkit-backdrop-filter: none; } }
 
 .gate-card .eyebrow { color: var(--gold); justify-content: center; }
 
@@ -157,8 +157,8 @@
 /* ═══ APP SHELL & TOP BAR ═══ */
 .app-shell {
   min-height: 100dvh; display: flex; flex-direction: column; position: relative;
-  background:
-    radial-gradient(var(--paper-dot) 1px, transparent 1.4px) 0 0 / 22px 22px, /* halftone paper */
+  background: /* fine halftone over the character-color ground */
+    radial-gradient(var(--paper-dot) 1px, transparent 1.4px) 0 0 / 22px 22px,
     var(--cream);
 }
 .topbar {
@@ -286,8 +286,9 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 
 .catalog-section { margin-top: clamp(26px, 4vw, 44px); }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.section-heading h2 { font: 800 clamp(24px, 3.2vw, 34px)/1.1 var(--display); letter-spacing: -0.01em; margin: 8px 0 6px; }
-.section-heading p:not(.eyebrow) { color: var(--text-2); max-width: 60ch; }
+.section-heading .eyebrow { color: var(--page-accent); }
+.section-heading h2 { font: 800 clamp(24px, 3.2vw, 34px)/1.1 var(--display); letter-spacing: -0.01em; margin: 8px 0 6px; color: var(--page-fg); }
+.section-heading p:not(.eyebrow) { color: var(--page-fg-2); max-width: 60ch; }
 .showing { font: 800 13px/1 var(--body); color: var(--text-2); background: var(--card); border-radius: 999px; padding: 10px 16px; box-shadow: var(--shadow-card); white-space: nowrap; }
 
 .filters { display: flex; align-items: center; gap: 12px; margin: 20px 0 22px; flex-wrap: wrap; }
@@ -297,7 +298,7 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
   border: 1px solid var(--chip);
 }
 .search-box input { flex: 1; min-width: 0; border: none; outline: none; background: none; font-weight: 700; color: var(--text); }
-.filter-scroll { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 4px; }
+.filter-scroll { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 4px; color: var(--page-fg-2); }
 .filter-scroll button {
   min-height: 40px; padding: 0 16px; border: 1px solid var(--chip); border-radius: 999px; white-space: nowrap;
   background: var(--card); color: var(--text-2); font: 800 13px/1 var(--body);
@@ -369,8 +370,8 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
   min-height: 44px; border-radius: 12px; border: none; font: 800 13.5px/1 var(--body);
   transition: transform 150ms var(--ease-spring), background 150ms ease, box-shadow 150ms ease;
 }
-.add-pick { background: var(--red); color: var(--glove); box-shadow: 0 10px 22px rgba(227, 39, 61, 0.3); }
-.add-pick:hover { transform: translateY(-1px); background: var(--red-deep); }
+.add-pick { background: var(--gold); color: var(--ink); box-shadow: 0 10px 22px rgba(223, 165, 14, 0.35); }
+.add-pick:hover { transform: translateY(-1px); background: var(--gold-deep); }
 .add-pick:active { transform: scale(0.98); }
 .add-pick:disabled { opacity: 0.5; box-shadow: none; cursor: not-allowed; transform: none; }
 .remove-pick { background: #f6e8e8; color: var(--red-deep); }
@@ -380,9 +381,9 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 
 /* ═══ MY TOP 33 — the ticket book ═══ */
 .page-intro { text-align: center; margin: 8px auto 24px; max-width: 640px; }
-.page-intro h1 { font: 800 clamp(30px, 4.5vw, 44px)/1.05 var(--display); margin: 10px 0 10px; }
-.page-intro p:not(.eyebrow) { color: var(--text-2); line-height: 1.6; }
-.page-intro .eyebrow { justify-content: center; }
+.page-intro h1 { font: 800 clamp(30px, 4.5vw, 44px)/1.05 var(--display); margin: 10px 0 10px; color: var(--page-fg); }
+.page-intro p:not(.eyebrow) { color: var(--page-fg-2); line-height: 1.6; }
+.page-intro .eyebrow { justify-content: center; color: var(--page-accent); }
 
 .rank-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; align-items: start; }
 
@@ -406,8 +407,8 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
   gap: 4px 14px; align-items: center;
   border-radius: var(--radius-tile);
   background:
-    radial-gradient(var(--paper-dot) 1px, transparent 1.3px) 0 0 / 16px 16px, /* ticket paper */
-    var(--cream);
+    radial-gradient(rgba(25, 17, 20, 0.045) 1px, transparent 1.3px) 0 0 / 16px 16px, /* ticket paper */
+    var(--ticket);
   border: 1px solid var(--line); border-left: 6px solid var(--park-c);
   padding: 12px 14px;
   transition: box-shadow 220ms ease, transform 220ms var(--ease-spring);
@@ -513,7 +514,7 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 .leaderboard { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
 .leaderboard-head {
   display: grid; grid-template-columns: 84px minmax(0, 1.4fr) minmax(0, 1fr) 92px; gap: 14px;
-  padding: 0 18px; font: 800 11px/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2);
+  padding: 0 18px; font: 800 11px/1 var(--body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--page-fg-2);
 }
 .result-row {
   display: grid; grid-template-columns: 84px minmax(0, 1.4fr) minmax(0, 1fr) 92px; gap: 14px; align-items: center;
@@ -535,8 +536,8 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 .points b { font: 800 24px/1 var(--display); color: var(--red); display: block; }
 .points small { font-weight: 800; font-size: 11px; color: var(--text-2); letter-spacing: 0.08em; text-transform: uppercase; }
 
-.empty-results { display: grid; place-items: center; gap: 14px; text-align: center; padding: 60px 18px; color: var(--text-2); }
-.empty-results h2 { font: 800 24px/1.2 var(--display); color: var(--text); }
+.empty-results { display: grid; place-items: center; gap: 14px; text-align: center; padding: 60px 18px; color: var(--page-fg-2); }
+.empty-results h2 { font: 800 24px/1.2 var(--display); color: var(--page-fg); }
 .empty-results button { min-height: 48px; padding: 0 22px; border: none; border-radius: 999px; background: var(--red); color: var(--glove); font: 800 14.5px/1 var(--body); }
 
 .results-note {
@@ -549,8 +550,8 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
 /* ═══ FOOTER ═══ */
 footer {
   display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap;
-  padding: 26px clamp(16px, 3.5vw, 34px); color: var(--text-2); font-size: 13px; font-weight: 600;
-  border-top: 1px solid var(--line);
+  padding: 26px clamp(16px, 3.5vw, 34px); color: var(--page-fg-2); font-size: 13px; font-weight: 600;
+  border-top: 1px solid color-mix(in srgb, var(--page-fg) 18%, transparent);
 }
 footer span { display: inline-flex; align-items: center; gap: 8px; }
 

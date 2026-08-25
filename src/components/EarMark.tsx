@@ -12,18 +12,52 @@ export function EarMark({
   color?: string
   className?: string
 }) {
+  /* Four character silhouettes live in one SVG; themes.css shows exactly one
+     per theme, so every decorative mark morphs with the active design:
+     mickey = round ears · minnie = round ears + bow · oswald = tall rabbit
+     ears · goofy = droopy hound ears. All original geometry, no assets. */
   return (
     <svg
-      className={className}
+      className={className ? `ear-svg ${className}` : 'ear-svg'}
       width={size}
       height={size}
       viewBox="0 0 100 100"
       aria-hidden="true"
       focusable="false"
     >
-      <circle cx="26" cy="28" r="20" fill={color} />
-      <circle cx="74" cy="28" r="20" fill={color} />
-      <circle cx="50" cy="60" r="30" fill={color} />
+      <g className="mark-mickey">
+        <circle cx="26" cy="28" r="20" fill={color} />
+        <circle cx="74" cy="28" r="20" fill={color} />
+        <circle cx="50" cy="60" r="30" fill={color} />
+      </g>
+      <g className="mark-minnie">
+        <circle cx="24" cy="34" r="19" fill={color} />
+        <circle cx="76" cy="34" r="19" fill={color} />
+        <circle cx="50" cy="64" r="29" fill={color} />
+        <ellipse cx="37" cy="18" rx="14" ry="10" fill={color} transform="rotate(-22 37 18)" />
+        <ellipse cx="63" cy="18" rx="14" ry="10" fill={color} transform="rotate(22 63 18)" />
+        <circle cx="50" cy="20" r="7" fill={color} />
+      </g>
+      <g className="mark-oswald">
+        <ellipse cx="38" cy="24" rx="10" ry="23" fill={color} transform="rotate(-9 38 24)" />
+        <ellipse cx="62" cy="24" rx="10" ry="23" fill={color} transform="rotate(9 62 24)" />
+        <circle cx="50" cy="64" r="28" fill={color} />
+      </g>
+      <g className="mark-goofy">
+        <circle cx="50" cy="52" r="27" fill={color} />
+        <ellipse cx="23" cy="58" rx="9" ry="21" fill={color} transform="rotate(24 23 58)" />
+        <ellipse cx="77" cy="58" rx="9" ry="21" fill={color} transform="rotate(-24 77 58)" />
+      </g>
+      <g className="mark-cheshire">
+        <circle cx="50" cy="60" r="28" fill={color} />
+        <polygon points="24,44 30,10 48,34" fill={color} />
+        <polygon points="76,44 70,10 52,34" fill={color} />
+      </g>
+      <g className="mark-buzz">
+        <circle cx="50" cy="46" r="26" fill={color} />
+        <polygon points="26,58 2,84 44,70" fill={color} />
+        <polygon points="74,58 98,84 56,70" fill={color} />
+      </g>
     </svg>
   )
 }

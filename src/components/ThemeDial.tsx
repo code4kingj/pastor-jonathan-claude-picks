@@ -1,6 +1,6 @@
 /* ── ThemeDial ────────────────────────────────────────────────────────────────
-   Floating design-candidate switcher. Lets the family flip through all six
-   themed versions of the app live. Visual-only: never touches room state. */
+   Floating design-candidate switcher, present on every page. One clean row
+   per design. Visual-only: never touches room state. */
 
 import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Palette, X } from 'lucide-react'

@@ -15,22 +15,28 @@
   --glove: #ffffff;
 
   /* grounds */
-  --sky: #0e0a1e;        /* midnight firework sky */
-  --sky-2: #1c1240;
-  --sky-3: #2b174e;
-  --sky-4: #451d3e;
-  --cream: #fff7ee;      /* daytime park paper */
-  --paper: #fdefdd;
+  --sky: #120c0e;        /* Mickey's night is ink black, not blue */
+  --sky-2: #1e1316;
+  --sky-3: #2e181c;
+  --sky-4: #401a21;
+  --cream: #ee2437;      /* the ground IS Mickey's shorts — bright true red */
+  --paper: #d5182a;
   --card: #ffffff;
   --card-hi: #fffdf9;    /* paper sheen + ticket punch holes */
 
   /* surface details (every theme repaints these) */
-  --line: #f0e4d0;
-  --chip: #f2e6d2;
-  --track: #f3e5cf;
-  --hover: #f4e7d4;
-  --topbar-bg: rgba(255, 247, 238, 0.88);
-  --paper-dot: rgba(223, 165, 14, 0.055);
+  --line: #f3d8d3;
+  --chip: #fbdad2;
+  --track: #f8d3ca;
+  --hover: #fbdad2;
+  --topbar-bg: rgba(255, 255, 255, 0.92);
+  --paper-dot: rgba(255, 255, 255, 0.28);
+  --ticket: #fff0ec;     /* ranked-row paper (stays light on every ground) */
+
+  /* text that sits directly on the page ground (not inside a card) */
+  --page-fg: #ffffff;
+  --page-fg-2: #ffd9d4;
+  --page-accent: var(--gold);
 
   /* text */
   --text: #241a1e;
