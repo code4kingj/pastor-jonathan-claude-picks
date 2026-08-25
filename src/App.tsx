@@ -73,13 +73,25 @@ const parkClass: Record<Park, string> = {
   'Hollywood Studios': 'studios',
 }
 
+/* crypto.randomUUID only exists in secure contexts (https/localhost); family
+   phones reach this app over plain http on the home network, so fall back to
+   a hand-rolled RFC4122 v4 built from getRandomValues. */
+function makeId(): string {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+  const bytes = crypto.getRandomValues(new Uint8Array(16))
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('')
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
+}
+
 function imageUrl(item: Attraction) {
   return `${import.meta.env.BASE_URL}${item.image}`
 }
 
 function makeMember(name: string, birthday: string, twinOrder: '' | 'oldest' | 'youngest'): FamilyMember {
   return {
-    id: crypto.randomUUID(),
+    id: makeId(),
     name: name.trim(),
     rankings: [],
     updatedAt: new Date().toISOString(),
@@ -216,6 +228,71 @@ export function AttractionCard({ item, rank, onToggle }: { item: Attraction; ran
   )
 }
 
+function ProfileEditor({
+  member,
+  onSave,
+  onSwitch,
+  onClose,
+}: {
+  member: FamilyMember
+  onSave: (updates: { name: string; birthday: string; twinOrder: '' | 'oldest' | 'youngest' }) => void
+  onSwitch: () => void
+  onClose: () => void
+}) {
+  const [draftName, setDraftName] = useState(member.name)
+  const [draftBirthday, setDraftBirthday] = useState(member.birthday ?? '')
+  const [draftTwin, setDraftTwin] = useState<'' | 'oldest' | 'youngest'>(member.twinOrder ?? '')
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  const twin = isTwinBirthday(draftBirthday)
+  const valid = draftName.trim().length > 0 && draftBirthday.length > 0 && (!twin || draftTwin !== '')
+
+  return (
+    <div className="profile-overlay" onClick={(event) => event.target === event.currentTarget && onClose()}>
+      <section className="profile-card" role="dialog" aria-label="My info">
+        <header>
+          <b>My info</b>
+          <button className="theme-close" aria-label="Close" onClick={onClose}><X size={17} /></button>
+        </header>
+        <label htmlFor="profile-name">Name</label>
+        <input id="profile-name" value={draftName} maxLength={32} onChange={(event) => setDraftName(event.target.value)} />
+        <label htmlFor="profile-birthday">Birthday</label>
+        <input
+          id="profile-birthday"
+          type="date"
+          value={draftBirthday}
+          max={new Date().toISOString().slice(0, 10)}
+          onChange={(event) => { setDraftBirthday(event.target.value); if (!isTwinBirthday(event.target.value)) setDraftTwin('') }}
+        />
+        {twin && (
+          <fieldset className="twin-question">
+            <legend>December 24! Are you the oldest or youngest twin?</legend>
+            <label><input type="radio" name="profile-twin" checked={draftTwin === 'oldest'} onChange={() => setDraftTwin('oldest')} /> Oldest twin</label>
+            <label><input type="radio" name="profile-twin" checked={draftTwin === 'youngest'} onChange={() => setDraftTwin('youngest')} /> Youngest twin</label>
+          </fieldset>
+        )}
+        <button
+          className="profile-save"
+          disabled={!valid}
+          onClick={() => { onSave({ name: draftName, birthday: draftBirthday, twinOrder: draftTwin }); onClose() }}
+        >
+          <Check size={17} /> Save my info
+        </button>
+        <button className="profile-switch" onClick={onSwitch}>
+          <Users size={16} /> Not you? Switch person on this device
+        </button>
+      </section>
+    </div>
+  )
+}
+
 function App() {
   const [credentials, setCredentials] = useState<RoomCredentials | null>(() => parseRoomLink())
   const [room, setRoom] = useState<FamilyRoom | null>(null)
@@ -232,6 +309,7 @@ function App() {
   const [error, setError] = useState('')
   const [syncState, setSyncState] = useState<'saved' | 'saving' | 'error'>('saved')
   const [copied, setCopied] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
   const roomRef = useRef<FamilyRoom | null>(null)
   const isTestRoom = room?.title.includes('Test Room') ?? false
 
@@ -312,7 +390,7 @@ function App() {
     const now = new Date().toISOString()
     const draft: FamilyRoom = {
       version: 1,
-      id: crypto.randomUUID(),
+      id: makeId(),
       title: "Pastor Jonathan's Birthday Picks",
       videoId: 'Ok72hT9iOpY',
       members: [firstMember],
@@ -357,8 +435,41 @@ function App() {
     updateRanking(moveItem(ranking, ranking.indexOf(String(active.id)), ranking.indexOf(String(over.id))))
   }
 
+  function saveProfile(updates: { name: string; birthday: string; twinOrder: '' | 'oldest' | 'youngest' }) {
+    setSyncState('saving')
+    setMember((current) => current ? {
+      ...current,
+      name: updates.name.trim(),
+      birthday: updates.birthday,
+      ...(updates.twinOrder ? { twinOrder: updates.twinOrder } : { twinOrder: undefined }),
+    } : current)
+  }
+
+  function switchPerson() {
+    if (credentials) localStorage.removeItem(memberStorageKey(credentials.id))
+    setMember(null)
+    setProfileOpen(false)
+    setName('')
+    setBirthday('')
+    setTwinOrder('')
+  }
+
   async function shareRoom() {
-    await navigator.clipboard.writeText(window.location.href)
+    const link = window.location.href
+    try {
+      await navigator.clipboard.writeText(link)
+    } catch {
+      /* http on the home network has no clipboard API — textarea fallback */
+      const scratch = document.createElement('textarea')
+      scratch.value = link
+      scratch.setAttribute('readonly', '')
+      scratch.style.position = 'fixed'
+      scratch.style.opacity = '0'
+      document.body.appendChild(scratch)
+      scratch.select()
+      document.execCommand('copy')
+      scratch.remove()
+    }
     setCopied(true)
     window.setTimeout(() => setCopied(false), 1800)
   }
@@ -441,8 +552,10 @@ function App() {
           <button className={view === 'rank' ? 'active' : ''} onClick={() => setView('rank')}><Heart size={17} /> My Top 33 <span className="count">{ranking.length}</span></button>
           <button className={view === 'results' ? 'active' : ''} onClick={() => setView('results')}><BarChart3 size={17} /> Family Results</button>
         </nav>
+        <button className="avatar-button" aria-label="Edit my info" title="Edit my info" onClick={() => setProfileOpen(true)}>{member.name.slice(0, 1).toUpperCase()}</button>
         <button className="share-button shimmer" onClick={shareRoom}>{copied ? <Check size={17} /> : <Link2 size={17} />}{copied ? 'Copied!' : 'Invite family'}</button>
       </header>
+      {profileOpen && <ProfileEditor member={member} onSave={saveProfile} onSwitch={switchPerson} onClose={() => setProfileOpen(false)} />}
       {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
       {isTestRoom && <div className="test-watermark" aria-hidden="true">TEST ROOM</div>}
 
