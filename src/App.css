@@ -395,6 +395,30 @@ main { width: min(1240px, 100%); margin: 0 auto; padding: clamp(18px, 3vw, 34px)
   content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 12px;
   background: radial-gradient(circle at 8px 12px, var(--card-hi) 6px, transparent 6.5px) left bottom / 24px 12px repeat-x;
 }
+/* photo slide-through on cards */
+.slide-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 34px; height: 44px; border: none; border-radius: 10px;
+  display: grid; place-items: center; font-size: 26px; line-height: 1; padding-bottom: 4px;
+  background: rgba(20, 12, 24, 0.55); color: #ffffff;
+  opacity: 0; transition: opacity 160ms ease, background 160ms ease;
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.slide-arrow.prev { left: 8px; }
+.slide-arrow.next { right: 8px; }
+.card-image:hover .slide-arrow, .slide-arrow:focus-visible { opacity: 1; }
+@media (hover: none) { .slide-arrow { opacity: 0.85; } } /* always visible on touch */
+.slide-arrow:hover { background: rgba(20, 12, 24, 0.8); }
+.slide-dots { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 3; display: flex; gap: 5px; }
+.slide-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.45); }
+.slide-dots i.on { background: #ffffff; }
+.slide-credit {
+  position: absolute; right: 8px; bottom: 14px; z-index: 3; max-width: 70%;
+  font: 600 9.5px/1.3 var(--body); color: rgba(255, 255, 255, 0.85);
+  background: rgba(20, 12, 24, 0.55); border-radius: 7px; padding: 3px 8px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
 .video-order {
   position: absolute; left: 12px; top: 12px; font: 800 11px/1 var(--body); letter-spacing: 0.04em;
   color: var(--glove); background: rgba(20, 12, 24, 0.72); border-radius: 999px; padding: 6px 11px;

@@ -52,6 +52,11 @@ import { EarMark, ProgressEars, RankMedallion } from './components/EarMark'
 import { NightSky } from './components/NightSky'
 import { ThemeDial } from './components/ThemeDial'
 import { readStoredTheme, type ThemeId } from './themes'
+
+/* extra web-sourced pictures per attraction, downloaded at build time with
+   their Wikimedia credits: public/media.json */
+type MediaImage = { src: string; credit?: string }
+type MediaManifest = Record<string, { images?: MediaImage[] }>
 import './App.css'
 import './themes.css'
 
@@ -187,14 +192,28 @@ export function SortablePick({
   )
 }
 
-export function AttractionCard({ item, rank, onToggle }: { item: Attraction; rank?: number; onToggle: () => void }) {
+export function AttractionCard({ item, rank, onToggle, extras }: { item: Attraction; rank?: number; onToggle: () => void; extras?: MediaImage[] }) {
+  const [slide, setSlide] = useState(0)
+  const slides: MediaImage[] = [
+    { src: imageUrl(item), credit: 'From the family video' },
+    ...(extras ?? []).map((image) => ({ src: `${import.meta.env.BASE_URL}${image.src}`, credit: image.credit })),
+  ]
+  const current = slides[Math.min(slide, slides.length - 1)]
   return (
     <article className={`attraction-card ${parkClass[item.park]} ${rank ? 'selected' : ''}`}>
       <div className="card-image">
-        <img src={imageUrl(item)} alt={`Video view of ${item.name}`} loading="lazy" />
+        <img src={current.src} alt={`View of ${item.name}`} loading="lazy" />
         <div className="image-scrim" />
         <span className="video-order">#{item.order} in video</span>
         {rank && <span className="selected-rank"><RankMedallion rank={rank} size={42} /></span>}
+        {slides.length > 1 && (
+          <>
+            <button className="slide-arrow prev" aria-label={`Previous photo of ${item.name}`} onClick={() => setSlide((slide - 1 + slides.length) % slides.length)}>‹</button>
+            <button className="slide-arrow next" aria-label={`Next photo of ${item.name}`} onClick={() => setSlide((slide + 1) % slides.length)}>›</button>
+            <span className="slide-dots" aria-hidden="true">{slides.map((_, i) => <i key={i} className={i === Math.min(slide, slides.length - 1) ? 'on' : ''} />)}</span>
+            {slide > 0 && current.credit && <span className="slide-credit">{current.credit}</span>}
+          </>
+        )}
       </div>
       <div className="card-body">
         <div className="card-meta">
@@ -310,6 +329,7 @@ function App() {
   const [syncState, setSyncState] = useState<'saved' | 'saving' | 'error'>('saved')
   const [copied, setCopied] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [media, setMedia] = useState<MediaManifest>({})
   const roomRef = useRef<FamilyRoom | null>(null)
   const isTestRoom = room?.title.includes('Test Room') ?? false
 
@@ -355,6 +375,13 @@ function App() {
   useEffect(() => {
     roomRef.current = room
   }, [room])
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}media.json`)
+      .then((response) => (response.ok ? response.json() : {}))
+      .then((manifest: MediaManifest) => setMedia(manifest))
+      .catch(() => undefined)
+  }, [])
 
 
 
@@ -595,7 +622,7 @@ function App() {
               <select aria-label="Experience type" value={category} onChange={(event) => setCategory(event.target.value)}>{categories.map((item) => <option key={item}>{item}</option>)}</select>
             </div>
             <div className="attraction-grid">
-              {filtered.map((item) => <AttractionCard key={item.id} item={item} rank={selected.get(item.id)} onToggle={() => togglePick(item.id)} />)}
+              {filtered.map((item) => <AttractionCard key={item.id} item={item} rank={selected.get(item.id)} onToggle={() => togglePick(item.id)} extras={media[item.id]?.images} />)}
             </div>
           </section>
         </main>
