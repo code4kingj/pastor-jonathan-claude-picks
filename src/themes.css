@@ -393,8 +393,8 @@
 [data-theme='goofy'] .aside-card.gold { background: linear-gradient(150deg, #fde8cf, #fbd7a8); color: #7a5210; border-color: #f0c076; }
 [data-theme='goofy'] .aside-card.gold h3 { color: #5c3c06; }
 [data-theme='goofy'] .result-row.podium { background: linear-gradient(140deg, #fdf0dc, #fbe1b8); border-color: var(--gold-deep); }
-[data-theme='goofy'] .add-pick { background: #17130d; color: #ffce54; box-shadow: 0 10px 22px rgba(23, 19, 13, 0.35); }
-[data-theme='goofy'] .add-pick:hover { background: #000000; }
+[data-theme='goofy'] .add-pick { background: #2b4f9e; color: #ffffff; box-shadow: 0 10px 22px rgba(43, 79, 158, 0.35); }
+[data-theme='goofy'] .add-pick:hover { background: #1e3b7d; }
 [data-theme='goofy'] .name-row button,
 [data-theme='goofy'] .primary-link { box-shadow: 0 14px 34px rgba(43, 79, 158, 0.42); }
 
