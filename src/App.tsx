@@ -424,6 +424,16 @@ function App() {
     return () => window.clearInterval(timer)
   }, [credentials])
 
+  useEffect(() => {
+    if (syncState !== 'error' || !credentials || !member) return
+    const timer = window.setInterval(() => {
+      saveMember(credentials, roomRef.current as FamilyRoom, { ...member, updatedAt: new Date().toISOString() })
+        .then((updated) => { setRoom(updated); setSyncState('saved') })
+        .catch(() => undefined)
+    }, 6000)
+    return () => window.clearInterval(timer)
+  }, [syncState, credentials, member])
+
   const ranking = member?.rankings ?? []
   const selected = new Map(ranking.map((id, index) => [id, index + 1]))
   const rankedAttractions = ranking.map((id) => attractionById.get(id)).filter(Boolean) as Attraction[]
@@ -475,6 +485,13 @@ function App() {
     const joined = makeMember(name, birthday, twinOrder)
     if (credentials) localStorage.setItem(memberStorageKey(credentials.id), joined.id)
     setMember(joined)
+    /* persist the join right away so a quick reload can never lose it */
+    if (credentials) {
+      setSyncState('saving')
+      saveMember(credentials, room, joined)
+        .then((updated) => { setRoom(updated); setSyncState('saved') })
+        .catch(() => setSyncState('error'))
+    }
   }
 
   function updateRanking(next: string[]) {
@@ -546,6 +563,7 @@ function App() {
 
   if (!room || !member) {
     const joining = Boolean(room && credentials)
+    const roomLoadFailed = Boolean(credentials && !room && error)
     return (
       <main className="gate">
         <NightSky />
@@ -563,6 +581,12 @@ function App() {
             <span><Sparkles size={16} /> 155 experiences</span>
             <span><Users size={16} /> One family result</span>
           </div>
+          {roomLoadFailed ? (
+            <div className="room-retry">
+              <p className="error-message">The family room could not be reached — this happens on a weak signal. Your list is safe.</p>
+              <button className="profile-save" onClick={() => window.location.reload()}>Try again</button>
+            </div>
+          ) : (
           <form onSubmit={(event) => { event.preventDefault(); if (joining) joinRoom(); else startRoom() }}>
             <label htmlFor="name">What should the family call you?</label>
             <div className="name-row">
@@ -591,7 +615,8 @@ function App() {
               </button>
             </div>
           </form>
-          {error && <p className="error-message">{error}</p>}
+          )}
+          {error && !roomLoadFailed && <p className="error-message">{error}</p>}
           {!isSharedModeAvailable && <p className="demo-note">Local preview mode is active until shared storage is connected.</p>}
           <p className="unofficial">A private family planner inspired by the magic of the parks. Not affiliated with or endorsed by Disney.</p>
         </section>
@@ -621,6 +646,11 @@ function App() {
       {!member.theme && <ThemeWelcome name={member.name} onChoose={chooseTheme} />}
       {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
       {isTestRoom && <div className="test-watermark" aria-hidden="true">TEST ROOM</div>}
+      {syncState === 'error' && (
+        <div className="sync-alert" role="alert">
+          <strong>Heads up!</strong> Your picks aren’t reaching the family room right now — keep the app open, I’m retrying automatically.
+        </div>
+      )}
 
       {view === 'discover' && (
         <main id="top">

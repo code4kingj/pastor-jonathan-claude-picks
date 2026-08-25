@@ -170,6 +170,14 @@
   box-shadow: 0 10px 26px rgba(25, 17, 20, 0.25);
 }
 
+/* unmissable when saves are failing */
+.sync-alert {
+  position: sticky; top: 0; z-index: 61; padding: 11px 16px; text-align: center;
+  background: var(--red-deep); color: #ffffff; font-size: 14px; font-weight: 700;
+  border-bottom: 3px solid #ffffff;
+}
+.sync-alert strong { font-weight: 900; letter-spacing: 0.04em; }
+
 /* ═══ APP SHELL & TOP BAR ═══ */
 .app-shell {
   min-height: 100dvh; display: flex; flex-direction: column; position: relative;
