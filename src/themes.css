@@ -451,6 +451,11 @@
 .theme-words { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .theme-words b { font: 800 13.5px/1.2 var(--body); }
 .theme-words small { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+/* first-step chooser inside the welcome overlay */
+.welcome-card { width: min(460px, 100%); }
+.welcome-card .qr-hint { margin-top: 0; }
+.welcome-list { max-height: min(56vh, 480px); padding: 8px 12px 4px; }
+
 .theme-panel footer {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding: 9px 10px; border-top: 1px solid var(--line); color: var(--text-2);

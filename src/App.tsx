@@ -52,7 +52,7 @@ import { EarMark, ProgressEars, RankMedallion } from './components/EarMark'
 import { NightSky } from './components/NightSky'
 import { ThemeDial } from './components/ThemeDial'
 import { QrInvite } from './components/QrInvite'
-import { readStoredTheme, type ThemeId } from './themes'
+import { readStoredTheme, THEMES, type ThemeId } from './themes'
 
 /* extra web-sourced pictures per attraction, downloaded at build time with
    their Wikimedia credits: public/media.json */
@@ -103,7 +103,6 @@ function makeMember(name: string, birthday: string, twinOrder: '' | 'oldest' | '
     updatedAt: new Date().toISOString(),
     birthday,
     ...(twinOrder ? { twinOrder } : {}),
-    theme: readStoredTheme(),
   }
 }
 
@@ -313,6 +312,31 @@ function ProfileEditor({
   )
 }
 
+/* everyone's first step inside: pick your design (the gate is always Mickey) */
+function ThemeWelcome({ name, onChoose }: { name: string; onChoose: (id: ThemeId) => void }) {
+  return (
+    <div className="profile-overlay">
+      <section className="profile-card welcome-card" role="dialog" aria-label="Pick your design">
+        <header><b>Welcome, {name}!</b></header>
+        <p className="qr-hint">First things first — pick the design this app wears on YOUR device. You can switch anytime with the dial in the bottom-left corner.</p>
+        <div className="theme-list welcome-list">
+          {THEMES.map((item) => (
+            <button key={item.id} className="theme-option" onClick={() => onChoose(item.id)}>
+              <span className="theme-swatches" aria-hidden="true">
+                {item.swatches.map((color) => <i key={color} style={{ background: color }} />)}
+              </span>
+              <span className="theme-words">
+                <b>{item.name}</b>
+                <small>{item.vibe}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}
+
 function App() {
   const [credentials, setCredentials] = useState<RoomCredentials | null>(() => parseRoomLink())
   const [room, setRoom] = useState<FamilyRoom | null>(null)
@@ -377,6 +401,11 @@ function App() {
   useEffect(() => {
     roomRef.current = room
   }, [room])
+
+  useEffect(() => {
+    if (!room || !member) document.documentElement.dataset.theme = 'mickey'
+    else document.documentElement.dataset.theme = currentTheme
+  }, [room, member, currentTheme])
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}media.json`)
@@ -511,7 +540,6 @@ function App() {
           <EarMark className="gate-ears" />
           <h1>Opening the birthday room…</h1>
         </div>
-        <ThemeDial value={currentTheme} onChange={chooseTheme} />
       </main>
     )
   }
@@ -567,7 +595,6 @@ function App() {
           {!isSharedModeAvailable && <p className="demo-note">Local preview mode is active until shared storage is connected.</p>}
           <p className="unofficial">A private family planner inspired by the magic of the parks. Not affiliated with or endorsed by Disney.</p>
         </section>
-        <ThemeDial value={currentTheme} onChange={chooseTheme} />
       </main>
     )
   }
@@ -591,6 +618,7 @@ function App() {
       </header>
       {profileOpen && <ProfileEditor member={member} onSave={saveProfile} onSwitch={switchPerson} onClose={() => setProfileOpen(false)} />}
       {qrOpen && <QrInvite onClose={() => setQrOpen(false)} />}
+      {!member.theme && <ThemeWelcome name={member.name} onChoose={chooseTheme} />}
       {isTestRoom && <div className="test-room-banner" role="status"><strong>TEST ROOM</strong><span>Practice only—these choices do not affect Pastor Jonathan’s real family results.</span></div>}
       {isTestRoom && <div className="test-watermark" aria-hidden="true">TEST ROOM</div>}
 
